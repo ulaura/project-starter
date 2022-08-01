@@ -1,1 +1,16 @@
 /* This is your custom CSS file */
+.header__logo {
+	width: 10%;
+}
+
+.link__cnt {
+    padding: 0;
+	list-style-type: none;
+    width: 400px;
+}
+
+
+.no-style-link {
+    text-decoration: none;
+    color: #000;
+}
