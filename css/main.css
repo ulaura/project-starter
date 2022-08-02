@@ -10,7 +10,11 @@
 }
 
 
-.no-style-link {
+.no__style__link {
     text-decoration: none;
-    color: #000;
+    color: #0f0f7b;
+}
+
+.headline__text__blue {
+color: #0b0b85;
 }
