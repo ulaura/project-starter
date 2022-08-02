@@ -1,6 +1,11 @@
 /* This is your custom CSS file */
 .header__logo {
-	width: 10%;
+	width: 200px;
+}
+
+.page__content {
+	width: 1300px;
+    margin: auto;
 }
 
 .link__cnt {
@@ -9,6 +14,19 @@
 	width: 400px;
 }
 
+.set__position {
+	width: 80%;
+	position: absolute;
+	bottom: 24px;
+	left: 50%;
+	transform: translate(-50%);
+}
+
+.opinion__articles__width {
+	width: calc(100% / 3);
+}
+
+/* region general  classes */
 .no__style__link {
 	text-decoration: none;
 	color: #0f0f7b;
@@ -16,16 +34,4 @@
 
 .display__text__blue {
 	color: #0b0b85;
-}
-
-.set__position {
-    width: 80%;
-    position: absolute;
-    bottom: 24px;
-    left: 50%;
-    transform: translate(-50%);
-}
-
-.opinion__articles__width {
-    width: 33%;
 }
