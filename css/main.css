@@ -14,7 +14,7 @@
 	color: #0f0f7b;
 }
 
-.headline__text__blue {
+.display__text__blue {
 	color: #0b0b85;
 }
 
@@ -24,4 +24,8 @@
     bottom: 24px;
     left: 50%;
     transform: translate(-50%);
+}
+
+.opinion__articles__width {
+    width: 33%;
 }
