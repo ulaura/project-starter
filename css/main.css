@@ -4,17 +4,24 @@
 }
 
 .link__cnt {
-    padding: 0;
+	padding: 0;
 	list-style-type: none;
-    width: 400px;
+	width: 400px;
 }
 
-
 .no__style__link {
-    text-decoration: none;
-    color: #0f0f7b;
+	text-decoration: none;
+	color: #0f0f7b;
 }
 
 .headline__text__blue {
-color: #0b0b85;
+	color: #0b0b85;
+}
+
+.set__position {
+    width: 80%;
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translate(-50%);
 }
