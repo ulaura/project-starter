@@ -32,6 +32,10 @@
 	color: #0f0f7b;
 }
 
+.no__style__link:hover {
+    text-decoration: underline;
+}
+
 .display__text__blue {
 	color: #0b0b85;
 }
