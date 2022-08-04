@@ -26,6 +26,25 @@
 	width: calc(100% / 3);
 }
 
+.most__viewed__section__grid {
+display: grid;
+/* gap: 1.5rem; */
+/* grid-template-columns: 1fr 1fr; */
+grid-template-columns: repeat(2, 1fr);
+
+}
+
+.most__viewed__article {
+    padding: 1rem; 
+}
+
+.most__viewed__article:nth-child(n+3) {
+    border-top: 2px solid #dfdfdf;
+}
+
+.most__viewed__article:nth-child(odd) {
+    border-right: 2px solid #dfdfdf;
+}
 
 /* region general  classes */
 .no__style__link {
@@ -40,3 +59,4 @@
 .display__text__blue {
 	color: #0b0b85;
 }
+
