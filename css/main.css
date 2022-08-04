@@ -34,16 +34,17 @@ grid-template-columns: repeat(2, 1fr);
 
 }
 
-.most__viewed__article {
-    padding: 1rem; 
-}
-
 .most__viewed__article:nth-child(n+3) {
     border-top: 2px solid #dfdfdf;
 }
 
 .most__viewed__article:nth-child(odd) {
+    padding: 1rem 1rem 1rem 0; 
     border-right: 2px solid #dfdfdf;
+}
+
+.most__viewed__article:nth-child(even) {
+    padding: 1rem; 
 }
 
 /* region general  classes */
