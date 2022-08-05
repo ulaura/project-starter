@@ -1,5 +1,5 @@
 /* This is your custom CSS file */
-.top__header__position {
+.page__header {
 	position: sticky;
     top: 0;
     z-index: 999;
@@ -103,7 +103,7 @@
 
 
 @media screen and (max-width:900px ){
-	.main__header__direction__column {
+	.page__header {
         flex-direction: column;
     }
 
@@ -113,11 +113,25 @@
 	}
 }
 
-@media screen and (max-width:855px ) {
-	.px__added {
-		padding-right: 1rem;
-		padding-left: 1rem;
+@media screen and (max-width:715px ) {
+
+	body {
+		overflow-x: hidden;
+		width: 100%;
 	}
 
+	.media__header__wrap {
+		flex-direction: column!important;
+		align-items: center!important;
+	}
+
+	.media__no__width {
+		width: 0!important;
+	}
+
+	.px__1 {
+		padding-left: 1rem;
+		padding-right: 1rem;
+	}
 }
 
