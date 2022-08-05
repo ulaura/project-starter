@@ -1,11 +1,18 @@
 /* This is your custom CSS file */
+.top__header__position {
+	position: sticky;
+    top: 0;
+    z-index: 999;
+    background-color:#ffffff;
+}
+
 .header__logo {
-	width: 200px;
+	width: 150px;
 }
 
 .page__content {
-	width: 1300px;
-    margin: auto;
+	width: 1000px;
+	margin: auto;
 }
 
 .link__cnt {
@@ -22,29 +29,28 @@
 	transform: translate(-50%);
 }
 
-.opinion__articles__width {
+.width__one__third{
 	width: calc(100% / 3);
 }
 
 .most__viewed__section__grid {
-display: grid;
-/* gap: 1.5rem; */
-/* grid-template-columns: 1fr 1fr; */
-grid-template-columns: repeat(2, 1fr);
-
+	display: grid;
+	/* gap: 1.5rem; */
+	/* grid-template-columns: 1fr 1fr; */
+	grid-template-columns: repeat(2, 1fr);
 }
 
-.most__viewed__article:nth-child(n+3) {
-    border-top: 2px solid #dfdfdf;
+.most__viewed__article:nth-child(n + 3) {
+	border-top: 2px solid #dfdfdf;
 }
 
 .most__viewed__article:nth-child(odd) {
-    padding: 1rem 1rem 1rem 0; 
-    border-right: 2px solid #dfdfdf;
+	padding: 1rem 1rem 1rem 0;
+	border-right: 2px solid #dfdfdf;
 }
 
 .most__viewed__article:nth-child(even) {
-    padding: 1rem; 
+	padding: 1rem;
 }
 
 /* region general  classes */
@@ -54,10 +60,64 @@ grid-template-columns: repeat(2, 1fr);
 }
 
 .no__style__link:hover {
-    text-decoration: underline;
+	text-decoration: underline;
 }
 
 .display__text__blue {
 	color: #0b0b85;
+}
+
+@media screen and (max-width: 1096px) {
+    .page__content {
+      width: 100%;
+      margin: 0;
+    }
+
+	.headlines__image {
+		height: 100%;
+	}
+}
+@media screen and (max-width:718px ) {
+    .direction__column {
+        flex-direction: column;
+    }
+
+	.full__width {
+		width: 100%!important;
+	}
+
+	.px__none {
+		padding-left: 0!important;
+		padding-right: 0!important;
+	}
+
+	.bx__none {
+		border-right: none!important;
+		border-left: none!important;
+	}
+
+	.hr__visibility {
+		visibility: hidden;
+	}
+}
+
+
+@media screen and (max-width:900px ){
+	.main__header__direction__column {
+        flex-direction: column;
+    }
+
+	.mx__logo{
+		margin-top: 0;
+		margin-bottom: 1rem;
+	}
+}
+
+@media screen and (max-width:855px ) {
+	.px__added {
+		padding-right: 1rem;
+		padding-left: 1rem;
+	}
+
 }
 

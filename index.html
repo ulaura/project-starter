@@ -14,9 +14,11 @@
 		<link rel="stylesheet" href="./css/main.css" />
 	</head>
 	<body>
-		<header class="d-flex justify-content-around py-3 align-items-center">
+		<header
+			class="d-flex justify-content-around py-3 align-items-center top__header__position main__header__direction__column"
+		>
 			<img
-				class="header__logo"
+				class="header__logo mx__logo"
 				src="https://static.skyassets.com/contentstack/assets/bltdc2476c7b6b194dd/blt60b2d631fdc493bf/605083db32845c7ca164859d/NOW_Logo_Solid_Gradient_131x42mm_RGB-1.png"
 				alt="now"
 			/>
@@ -31,7 +33,7 @@
 				</ul>
 			</nav>
 			<div class="d-flex align-items-center">
-				<select class="form-select me-1">
+				<select class="form-select me-3">
 					<option>EN</option>
 					<option>ES</option>
 					<option>DE</option>
@@ -40,16 +42,18 @@
 			</div>
 		</header>
 		<main class="page__content">
-			<section class="w-75 m-auto mt-5 px-3">
-				<header class="d-flex justify-content-between align-items-end">
+			<section class="mt-5 px-3">
+				<header
+					class="d-flex justify-content-between align-items-end headlines__header"
+				>
 					<h2 class="m-0 fs-3 display__text__blue">Headlines</h2>
 					<hr class="w-75 m-0" />
 					<a href="#" class="text-dark">View all</a>
 				</header>
-				<div class="d-flex w-100">
-					<div class="w-50 pt-4 pe-3 position-relative">
+				<div class="d-flex w-100 direction__column">
+					<div class="w-50 pt-4 pe-3 position-relative full__width px__none">
 						<img
-							class="w-100"
+							class="w-100 headlines__image"
 							src="https://images.unsplash.com/photo-1561494653-744c43aed0c1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1494&q=80"
 							alt="laptop"
 						/>
@@ -60,7 +64,7 @@
 							<small class="text-muted d-block mt-1">25/03/2022</small>
 						</div>
 					</div>
-					<div class="d-flex flex-column w-50 border-start border-2 pt-4 ps-3">
+					<div class="d-flex flex-column w-50 border-start border-2 pt-4 ps-3 full__width px__none bx__none">
 						<div>
 							<a href="#" class="no__style__link fw-bold"
 								>How to diploy with Vercel and MongoDB Atlas without even
@@ -85,7 +89,7 @@
 				</div>
 			</section>
 
-			<section class="w-75 m-auto mt-5">
+			<section class="mt-5">
 				<header
 					class="d-flex justify-content-between align-items-end display__text__blue px-3"
 				>
@@ -93,8 +97,8 @@
 					<hr class="w-75 m-0" />
 					<a href="#" class="text-dark">View all</a>
 				</header>
-				<div class="d-flex">
-					<article class="opinion__articles__width pt-3 px-3">
+				<div class="d-flex direction__column">
+					<article class="width__one__third bx__none full__width pt-3 px-3">
 						<header>
 							<img
 								src="https://i.ytimg.com/vi/LKnpNihhppo/maxresdefault.jpg"
@@ -110,7 +114,7 @@
 						<small class="text-muted d-block">25/03/2022</small>
 					</article>
 					<article
-						class="opinion__articles__width pt-3 border-start border-2 px-3"
+						class="width__one__third bx__none full__width pt-3 border-start border-end border-2 px-3"
 					>
 						<header>
 							<img
@@ -127,7 +131,7 @@
 						<small class="text-muted d-block">25/03/2022</small>
 					</article>
 					<article
-						class="opinion__articles__width pt-3 border-start border-2 px-3"
+						class="width__one__third bx__none full__width pt-3 px-3"
 					>
 						<header>
 							<img
@@ -146,7 +150,7 @@
 				</div>
 			</section>
 
-			<section class="w-75 m-auto mt-5 px-3">
+			<section class="mt-5 px-3">
 				<header
 					class="d-flex justify-content-between align-items-end display__text__blue"
 				>
@@ -154,8 +158,8 @@
 					<hr class="w-75 m-0" />
 					<a href="#" class="text-dark">View all</a>
 				</header>
-				<section class="d-flex">
-					<article class="pt-4 w-50 pe-3">
+				<section class="d-flex direction__column">
+					<article class="pt-4 w-50 pe-3 px__none full__width">
 						<header>
 							<img
 								src="https://images.unsplash.com/photo-1568952433726-3896e3881c65?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NTB8fGl0JTIwc2NpZW5jZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
@@ -171,7 +175,7 @@
 							<small class="d-block text-muted mt-2">25/03/2022</small>
 						</div>
 					</article>
-					<section class="w-50 border-start border-2 ps-3 pt-3">
+					<section class="w-50 border-start border-2 ps-3 pt-3 px__none full__width bx__none">
 						<article>
 							<a href="#" class="no__style__link fw-bold"
 								>Robot Dog Learns to Walk in One Hour
@@ -213,7 +217,7 @@
 				</section>
 			</section>
 
-			<section class="w-75 m-auto mt-5 px-3">
+			<section class="mt-5 px-3">
 				<header
 					class="d-flex justify-content-between align-items-end display__text__blue"
 				>
@@ -221,8 +225,8 @@
 					<hr class="w-75 m-0" />
 					<a href="#" class="text-dark">View all</a>
 				</header>
-				<section class="d-flex">
-					<article class="w-75 mt-4 pe-3">
+				<section class="d-flex gossip__split direction__column">
+					<article class="w-75 mt-4 pe-3 px-none full__width">
 						<header>
 							<img
 								src="https://images.unsplash.com/photo-1653836592205-d80d575d6b3c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTd8fHByb2dyYW1taW5nJTIwc2NpZW5jZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
@@ -238,8 +242,8 @@
 							<small class="d-block text-muted mt-2">25/03/2022</small>
 						</div>
 					</article>
-					<section class="w-25 border-start border-2 pt-4 ps-3">
-						<article>
+					<section class="w-25 border-start border-2 pt-4 ps-3 full__width px__none bx__none">
+						<article class="">
 							<header>
 								<img
 									src="https://images.unsplash.com/photo-1546410531-bb4caa6b424d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Njh8fHByb2dyYW1taW5nJTIwbGFuZ3VhZ2VzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
@@ -273,7 +277,7 @@
 				</section>
 			</section>
 
-			<section class="w-75 m-auto mt-5">
+			<section class="mt-5">
 				<header
 					class="d-flex justify-content-between align-items-end display__text__blue px-3"
 				>
@@ -281,7 +285,7 @@
 					<hr class="w-75 m-0" />
 					<a href="#" class="text-dark">View all</a>
 				</header>
-				<article class="mb-3 px-3 mt-4">
+				<article class="mb-3 px-3 mt-4 lifestyle__article__display">
 					<header>
 						<img
 							class="w-100"
@@ -297,9 +301,9 @@
 						<small class="d-block text-muted mt-2">25/03/2022</small>
 					</div>
 				</article>
-				<hr class="m-0 mx-3" />
-				<section class="d-flex">
-					<article class="opinion__articles__width pt-3 px-3">
+				<hr class="m-0 mx-3 hr__visibility" />
+				<section class="d-flex direction__column">
+					<article class="width__one__third pt-3 px-3 full__width">
 						<header>
 							<img
 								src="https://images.unsplash.com/photo-1507721999472-8ed4421c4af2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHByb2dyYW1taW5nJTIwYm9va3N8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
@@ -316,7 +320,7 @@
 						</div>
 					</article>
 					<article
-						class="opinion__articles__width border-start border-2 pt-3 px-3"
+						class="width__one__third border-start border-end border-2 pt-3 px-3 bx__none full__width"
 					>
 						<header>
 							<img
@@ -334,7 +338,7 @@
 						</div>
 					</article>
 					<article
-						class="opinion__articles__width border-start border-2 pt-3 px-3"
+						class="width__one__third pt-3 px-3 full__width"
 					>
 						<header>
 							<img
@@ -353,7 +357,7 @@
 				</section>
 			</section>
 
-			<section class="w-75 m-auto mt-5">
+			<section class="mt-5">
 				<header
 					class="d-flex justify-content-between align-items-end display__text__blue px-3 mb-3"
 				>
@@ -362,73 +366,137 @@
 					<a href="#" class="text-dark">View all</a>
 				</header>
 
-				<div class="d-flex px-3">
-				<section class="w-75 me-3 most__viewed__section__grid">
-						<article class="most__viewed__article"><a href="#" class="no__style__link fw-bold"> lo Humans Can't Be the Sole Keepers of Scientific Knowledge</a><small class="d-block text-muted mt-2">Loren Rita - 21/06/2022</small></article>
-						<article class="most__viewed__article"><a href="#" class="no__style__link fw-bold">AI Can Write Code Like Humans—Bugs and All</a><small class="d-block text-muted mt-2">Carina Susanne - 21/05/2022</small></article>
-						<article class="most__viewed__article"><a href="#" class="no__style__link fw-bold">Computer Scientists Find a Key Research Algorithm's Limits</a><small class="d-block text-muted mt-2">Kallisto Dionysia - 15/05/2022</small></article>
-						<article class="most__viewed__article"><a href="#" class="no__style__link fw-bold">GitHub's Commercial AI Tool Was Built From Open Source Code</a><small class="d-block text-muted mt-2">Oliver Alhassan - 16/06/2022</small></article>
-						<article class="most__viewed__article"><a href="#" class="no__style__link fw-bold">You're Probably Not Using the Web's Best Browser</a><small class="d-block text-muted mt-2">Devaraj Chuy - 07/09/2022</small></article>
-						<article class="most__viewed__article"><a href="#" class="no__style__link fw-bold">The JavaScript Framework That Puts Web Pages on a Diet</a><small class="d-block text-muted mt-2">Manisha Chiyembekezo - 18/02/2022</small></article>
-	
-				</section>
-				<div class="w-25">
-					<img src="https://images.unsplash.com/photo-1565229284535-2cbbe3049123?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZ3JhbW1pbmclMjBib29rc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60" alt="Coding books" class="w-100 h-100">
+				<div class="d-flex px-3 direction__column">
+					<section
+						class="w-75 me-3 most__viewed__section__grid full__width"
+					>
+						<article class="most__viewed__article">
+							<a href="#" class="no__style__link fw-bold">
+								lo Humans Can't Be the Sole Keepers of Scientific Knowledge</a
+							><small class="d-block text-muted mt-2"
+								>Loren Rita - 21/06/2022</small
+							>
+						</article>
+						<article class="most__viewed__article">
+							<a href="#" class="no__style__link fw-bold"
+								>AI Can Write Code Like Humans—Bugs and All</a
+							><small class="d-block text-muted mt-2"
+								>Carina Susanne - 21/05/2022</small
+							>
+						</article>
+						<article class="most__viewed__article">
+							<a href="#" class="no__style__link fw-bold"
+								>Computer Scientists Find a Key Research Algorithm's Limits</a
+							><small class="d-block text-muted mt-2"
+								>Kallisto Dionysia - 15/05/2022</small
+							>
+						</article>
+						<article class="most__viewed__article">
+							<a href="#" class="no__style__link fw-bold"
+								>GitHub's Commercial AI Tool Was Built From Open Source Code</a
+							><small class="d-block text-muted mt-2"
+								>Oliver Alhassan - 16/06/2022
+							</small>
+						</article>
+						<article class="most__viewed__article">
+							<a href="#" class="no__style__link fw-bold"
+								>You're Probably Not Using the Web's Best Browser</a
+							><small class="d-block text-muted mt-2"
+								>Devaraj Chuy - 07/09/2022</small
+							>
+						</article>
+						<article class="most__viewed__article">
+							<a href="#" class="no__style__link fw-bold"
+								>The JavaScript Framework That Puts Web Pages on a Diet</a
+							><small class="d-block text-muted mt-2"
+								>Manisha Chiyembekezo - 18/02/2022</small
+							>
+						</article>
+					</section>
+					<div class="w-25 full__width">
+						<img
+							src="https://images.unsplash.com/photo-1565229284535-2cbbe3049123?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZ3JhbW1pbmclMjBib29rc3xlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
+							alt="Coding books"
+							class="w-100 h-100"
+						/>
+					</div>
 				</div>
-			</div>
 			</section>
-			<div class="w-75 m-auto px-3">
-				<section class="justify-content-around align-items-center d-flex py-5 mt-5 bg-light">
-					<p class="m-0 fw-bold">NOW's goal is to: <q>Build a future where people live in harmony with nature.</q></p>
-					<button class="btn btn-warning">Sign up for the Guardian email</button>
+			<div class="px-3">
+				<section
+					class="justify-content-around align-items-center d-flex py-5 mt-5 bg-light px__added"
+				>
+					<p class="m-0 fw-bold">
+						NOW's goal is to:
+						<q>Build a future where people live in harmony with nature.</q>
+					</p>
+					<button class="btn btn-warning">
+						Sign up for the NOW email
+					</button>
 				</section>
 			</div>
-		<div class="w-75 m-auto px-3">
-			<footer class="mt-5 shadow p-4 bg-light">
-				<section class="d-flex justify-content-between">
-				<div class="d-flex flex-column opinion__articles__width">
-					<img
-					class="header__logo mb-4"
-					src="https://static.skyassets.com/contentstack/assets/bltdc2476c7b6b194dd/blt60b2d631fdc493bf/605083db32845c7ca164859d/NOW_Logo_Solid_Gradient_131x42mm_RGB-1.png"
-					alt="now"
-				/>
-				<a href="#" class="display__text__blue">Subscribe</a>
-				<a href="#" class="display__text__blue">Contribute</a>
-				</div>
+			<div class="px-3">
+				<footer class="mt-5 shadow p-4 bg-light">
+					<section class="d-flex justify-content-between">
+						<div class="d-flex flex-column width__one__third">
+							<img
+								class="header__logo mb-4"
+								src="https://static.skyassets.com/contentstack/assets/bltdc2476c7b6b194dd/blt60b2d631fdc493bf/605083db32845c7ca164859d/NOW_Logo_Solid_Gradient_131x42mm_RGB-1.png"
+								alt="now"
+							/>
+							<a href="#" class="display__text__blue">Subscribe</a>
+							<a href="#" class="display__text__blue">Contribute</a>
+						</div>
 
-				<section class="opinion__articles__width">
-					<ul class="link__cnt">
-						<li><a href="#" class="no__style__link">Contact us</a></li>
-						<li><a href="#" class="no__style__link">Complaints & corrections</a></li>
-						<li><a href="#" class="no__style__link">SecureDrop</a></li>
-						<li class="mb-4"><a href="#" class="no__style__link">Work for us</a></li>
-						<li><a href="#" class="no__style__link">Pivacy settings</a></li>
-						<li><a href="#" class="no__style__link">Privacy policy</a></li>
-						<li><a href="#" class="no__style__link">Cookie policy</a></li>
-						<li><a href="#" class="no__style__link">Terms & conditions</a></li>
-						<li><a href="#" class="no__style__link">Help</a></li>
-						<li><a href="#" class="no__style__link">Advertise with us</a></li>
-					</ul>
-				</section>
+						<section class="width__one__third">
+							<ul class="link__cnt">
+								<li><a href="#" class="no__style__link">Contact us</a></li>
+								<li>
+									<a href="#" class="no__style__link"
+										>Complaints & corrections</a
+									>
+								</li>
+								<li><a href="#" class="no__style__link">SecureDrop</a></li>
+								<li class="mb-4">
+									<a href="#" class="no__style__link">Work for us</a>
+								</li>
+								<li><a href="#" class="no__style__link">Pivacy settings</a></li>
+								<li><a href="#" class="no__style__link">Privacy policy</a></li>
+								<li><a href="#" class="no__style__link">Cookie policy</a></li>
+								<li>
+									<a href="#" class="no__style__link">Terms & conditions</a>
+								</li>
+								<li><a href="#" class="no__style__link">Help</a></li>
+								<li>
+									<a href="#" class="no__style__link">Advertise with us</a>
+								</li>
+							</ul>
+						</section>
 
-				<section class="opinion__articles__width">
-					<ul class="link__cnt">
-						<li><a href="#" class="no__style__link">All topics</a></li>
-						<li><a href="#" class="no__style__link">All writers</a></li>
-						<li class="mb-4"><a href="#" class="no__style__link">Digital newspaper archive</a></li>
-						<li><a href="#" class="no__style__link">Facebook</a></li>
-						<li><a href="#" class="no__style__link">Youtube</a></li>
-						<li><a href="#" class="no__style__link">Instagram</a></li>
-						<li><a href="#" class="no__style__link">Linkedin</a></li>
-						<li><a href="#" class="no__style__link">Twitter</a></li>
-						<li class="mb-4"><a href="#" class="no__style__link">Newsletters</a></li>
-						<li><a href="#" class="no__style__link">Search UK jobs</a></li>
-					</ul>
-				</section>
-			</section>
-				<small>© 2022 Company, Inc. All rights reserved</small>
-			</footer>
-		</div>
+						<section class="width__one__third">
+							<ul class="link__cnt">
+								<li><a href="#" class="no__style__link">All topics</a></li>
+								<li><a href="#" class="no__style__link">All writers</a></li>
+								<li class="mb-4">
+									<a href="#" class="no__style__link"
+										>Digital newspaper archive</a
+									>
+								</li>
+								<li><a href="#" class="no__style__link">Facebook</a></li>
+								<li><a href="#" class="no__style__link">Youtube</a></li>
+								<li><a href="#" class="no__style__link">Instagram</a></li>
+								<li><a href="#" class="no__style__link">Linkedin</a></li>
+								<li><a href="#" class="no__style__link">Twitter</a></li>
+								<li class="mb-4">
+									<a href="#" class="no__style__link">Newsletters</a>
+								</li>
+								<li><a href="#" class="no__style__link">Search UK jobs</a></li>
+							</ul>
+						</section>
+					</section>
+					<small>© 2022 Company, Inc. All rights reserved</small>
+				</footer>
+			</div>
 		</main>
 	</body>
 </html>
