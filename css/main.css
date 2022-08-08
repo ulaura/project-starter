@@ -1,4 +1,5 @@
 /* This is your custom CSS file */
+ /* region homepage */
 .page__header {
 	position: sticky;
     top: 0;
@@ -135,3 +136,32 @@
 	}
 }
 
+/* region postpage */
+
+.font__montserrat {
+	font-family: 'Montserrat', sans-serif;
+}
+
+.orion {
+	width: 100px;
+	height: 100px;
+}
+
+.img__width {
+	width: 70%;
+}
+
+.article__wrapper {
+	display: flex;
+}
+
+.w__70 {
+	width: 70%;
+}
+
+.fun__facts {
+	width: 30%;
+	align-self: center;
+    padding: 20px;
+    box-shadow: rgb(99 99 99 / 20%) 0px 2px 8px 0px;
+}
