@@ -113,3 +113,8 @@ Thumbs.db
 !.gitignore
 !.nvmrc
 !.phpcs.xml.dist
+
+# Others
+.env
+.vscode
+.parcel-cache
