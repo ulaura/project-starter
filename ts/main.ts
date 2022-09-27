@@ -3,9 +3,15 @@ import { API_LANG } from "./constants";
 import { API_KEY } from "./constants";
 
 const headlinesNewsContentElem = document.getElementById("headlinesNewsContent");
+const opinionNewsContentElem = document.getElementById("opinionNewsContent");
+const scienceNewsContentElem = document.getElementById("scienceNewsContent");
+const gossipNewsContentElem = document.getElementById('gossipNewsContent');
+const lifestyleNewsContentElem = document.getElementById('lifestyleNewsContent');
+const mostViewedNewsContentElem = document.getElementById('mostViewedNewsContent');
 
 const displayContent = () => {
     displayHeadlines();
+    displayOpinion();
 };
 
 const displayHeadlines = async ():Promise<void> => {
@@ -22,6 +28,22 @@ const displayHeadlines = async ():Promise<void> => {
     });
 
 
+};
+
+const displayOpinion = async ():Promise<void> => {
+    const {news} = await getNews("search", undefined, new Map([["keywords", "opinion"]]));
+    const articles = news.filter((article:any, index:number) => index < 3);
+    const opinionImageElem = opinionNewsContentElem?.getElementsByClassName("opinion__image");
+    const opinionArticleAuthorElem = opinionNewsContentElem?.getElementsByClassName("opinion__article__author");
+    const opinionArticleDescription = opinionNewsContentElem?.getElementsByClassName("opinion__article__description");
+    const opinionArticlePubDateElem = opinionNewsContentElem?.getElementsByClassName("opinion__article__pub__date");
+
+    articles.length >= 3 && articles.forEach((article:any, index:number) => {
+        opinionImageElem![index].setAttribute("src", article.image);
+        opinionArticleAuthorElem![index].textContent = article.author;
+        opinionArticleDescription![index].textContent = article.description;
+        opinionArticlePubDateElem![index].textContent = article.published.split(' ')[0].replaceAll('-', '/');
+    });
 };
 
 const getNews = async (action:string, maxNews:number = 30, params: Map<string, string | number> = new Map<string, string | number >): Promise<any> => {

@@ -534,8 +534,14 @@ function hmrAcceptRun(bundle, id) {
 },{}],"3rz9v":[function(require,module,exports) {
 var _constants = require("./constants");
 const headlinesNewsContentElem = document.getElementById("headlinesNewsContent");
+const opinionNewsContentElem = document.getElementById("opinionNewsContent");
+const scienceNewsContentElem = document.getElementById("scienceNewsContent");
+const gossipNewsContentElem = document.getElementById("gossipNewsContent");
+const lifestyleNewsContentElem = document.getElementById("lifestyleNewsContent");
+const mostViewedNewsContentElem = document.getElementById("mostViewedNewsContent");
 const displayContent = ()=>{
     displayHeadlines();
+    displayOpinion();
 };
 const displayHeadlines = async ()=>{
     const { news  } = await getNews("search", undefined, new Map([
@@ -552,6 +558,25 @@ const displayHeadlines = async ()=>{
     articles.length >= 4 && articles.forEach((article, index)=>{
         headlineArticleTitleElem[index].textContent = article.title;
         headlineArticlePubDateElem[index].textContent = article.published.split(" ")[0].replaceAll("-", "/");
+    });
+};
+const displayOpinion = async ()=>{
+    const { news  } = await getNews("search", undefined, new Map([
+        [
+            "keywords",
+            "opinion"
+        ]
+    ]));
+    const articles = news.filter((article, index)=>index < 3);
+    const opinionImageElem = opinionNewsContentElem?.getElementsByClassName("opinion__image");
+    const opinionArticleAuthorElem = opinionNewsContentElem?.getElementsByClassName("opinion__article__author");
+    const opinionArticleDescription = opinionNewsContentElem?.getElementsByClassName("opinion__article__description");
+    const opinionArticlePubDateElem = opinionNewsContentElem?.getElementsByClassName("opinion__article__pub__date");
+    articles.length >= 3 && articles.forEach((article, index)=>{
+        opinionImageElem[index].setAttribute("src", article.image);
+        opinionArticleAuthorElem[index].textContent = article.author;
+        opinionArticleDescription[index].textContent = article.description;
+        opinionArticlePubDateElem[index].textContent = article.published.split(" ")[0].replaceAll("-", "/");
     });
 };
 const getNews = async (action, maxNews = 30, params = new Map)=>{
