@@ -533,54 +533,132 @@ function hmrAcceptRun(bundle, id) {
 
 },{}],"3rz9v":[function(require,module,exports) {
 var _constants = require("./constants");
-const headlinesNewsContentElem = document.getElementById("headlinesNewsContent");
-const opinionNewsContentElem = document.getElementById("opinionNewsContent");
-const scienceNewsContentElem = document.getElementById("scienceNewsContent");
-const gossipNewsContentElem = document.getElementById("gossipNewsContent");
-const lifestyleNewsContentElem = document.getElementById("lifestyleNewsContent");
-const mostViewedNewsContentElem = document.getElementById("mostViewedNewsContent");
-const displayContent = ()=>{
-    displayHeadlines();
-    displayOpinion();
-};
-const displayHeadlines = async ()=>{
-    const { news  } = await getNews("search", undefined, new Map([
-        [
-            "keywords",
-            "headlines"
-        ]
-    ]));
-    const articles = news.filter((article, index)=>index < 4);
-    const headlinesImageElem = headlinesNewsContentElem?.querySelector(".headlines__image");
-    headlinesImageElem?.setAttribute("src", `${articles[1].image}`);
-    const headlineArticleTitleElem = headlinesNewsContentElem?.getElementsByClassName("headline__article__title");
-    const headlineArticlePubDateElem = headlinesNewsContentElem?.getElementsByClassName("headline__article__pub__date");
-    articles.length >= 4 && articles.forEach((article, index)=>{
-        headlineArticleTitleElem[index].textContent = article.title;
-        headlineArticlePubDateElem[index].textContent = article.published.split(" ")[0].replaceAll("-", "/");
+var _services = require("./services");
+var _view = require("./view");
+//TODO FIGURE OUT HOW TO REFACTOR INIT METHODS
+const init = ()=>{
+    const urlDetails = [
+        {
+            endpoint: "search",
+            queryParams: new Map([
+                [
+                    "keywords",
+                    "headlines"
+                ],
+                [
+                    "limit",
+                    `${(0, _constants.ARTICLE_PER_COMPONENT_HEADLINES)}`
+                ]
+            ])
+        }, 
+    ];
+    urlDetails.forEach(async (detail)=>{
+        const articles = await getArticles(detail);
+        (0, _view.componentDisplayHandler).displayHeadlines(articles);
     });
+    initOpinion();
+    initScience();
+    initGossip();
+    initLifestyle();
+    initMostViewed();
 };
-const displayOpinion = async ()=>{
-    const { news  } = await getNews("search", undefined, new Map([
-        [
-            "keywords",
-            "opinion"
-        ]
-    ]));
-    const articles = news.filter((article, index)=>index < 3);
-    const opinionImageElem = opinionNewsContentElem?.getElementsByClassName("opinion__image");
-    const opinionArticleAuthorElem = opinionNewsContentElem?.getElementsByClassName("opinion__article__author");
-    const opinionArticleDescription = opinionNewsContentElem?.getElementsByClassName("opinion__article__description");
-    const opinionArticlePubDateElem = opinionNewsContentElem?.getElementsByClassName("opinion__article__pub__date");
-    articles.length >= 3 && articles.forEach((article, index)=>{
-        opinionImageElem[index].setAttribute("src", article.image);
-        opinionArticleAuthorElem[index].textContent = article.author;
-        opinionArticleDescription[index].textContent = article.description;
-        opinionArticlePubDateElem[index].textContent = article.published.split(" ")[0].replaceAll("-", "/");
-    });
+const initOpinion = async ()=>{
+    const urlDetails = {
+        endpoint: "search",
+        queryParams: new Map([
+            [
+                "keywords",
+                "opinion"
+            ],
+            [
+                "limit",
+                `${(0, _constants.ARTICLE_PER_COMPONENT_OPINION)}`
+            ]
+        ])
+    };
+    const articles = await getArticles(urlDetails);
+    (0, _view.componentDisplayHandler).displayOpinion(articles);
 };
-const getNews = async (action, maxNews = 30, params = new Map)=>{
-    params.set("limit", maxNews);
+const initScience = async ()=>{
+    const urlDetails = {
+        endpoint: "search",
+        queryParams: new Map([
+            [
+                "keywords",
+                "science"
+            ],
+            [
+                "limit",
+                `${(0, _constants.ARTICLE_PER_COMPONENT_SCIENCE)}`
+            ]
+        ])
+    };
+    const articles = await getArticles(urlDetails);
+    (0, _view.componentDisplayHandler).displayScience(articles);
+};
+const initGossip = async ()=>{
+    const urlDetails = {
+        endpoint: "search",
+        queryParams: new Map([
+            [
+                "keywords",
+                "gossip"
+            ],
+            [
+                "limit",
+                `${(0, _constants.ARTICLE_PER_COMPONENT_GOSSIP)}`
+            ]
+        ])
+    };
+    const articles = await getArticles(urlDetails);
+    (0, _view.componentDisplayHandler).displayGossip(articles);
+};
+const initLifestyle = async ()=>{
+    const urlDetails = {
+        endpoint: "search",
+        queryParams: new Map([
+            [
+                "keywords",
+                "lifestyle"
+            ],
+            [
+                "limit",
+                `${(0, _constants.ARTICLE_PER_COMPONENT_LIFESTYLE)}`
+            ]
+        ])
+    };
+    const articles = await getArticles(urlDetails);
+    (0, _view.componentDisplayHandler).displayLifestyle(articles);
+};
+const initMostViewed = async ()=>{
+    const urlDetails = {
+        endpoint: "search",
+        queryParams: new Map([
+            [
+                "keywords",
+                "programming"
+            ],
+            [
+                "limit",
+                `${(0, _constants.ARTICLE_PER_COMPONENT_MOST_VIEWED)}`
+            ]
+        ])
+    };
+    const articles = await getArticles(urlDetails);
+    (0, _view.componentDisplayHandler).displayMostViewed(articles);
+};
+const getArticles = async (urlDetails)=>{
+    const { news  } = await (0, _services.getNews)(urlDetails.endpoint, urlDetails.queryParams);
+    return news.filter((article)=>article.image !== "None").filter((article, index)=>index < Number(urlDetails.queryParams.get("limit")));
+};
+init();
+
+},{"./services":"jH38A","./constants":"fVvYD","./view":"aqQhS"}],"jH38A":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "getNews", ()=>getNews);
+var _constants = require("./constants");
+const getNews = async (action, params = new Map)=>{
     params.set("language", `${(0, _constants.API_LANG)}`);
     params.set("apiKey", `${(0, _constants.API_KEY)}`);
     const apiParams = new Array;
@@ -593,19 +671,60 @@ const getNews = async (action, maxNews = 30, params = new Map)=>{
     let news = response.json();
     return news;
 };
-displayContent();
 
-},{"./constants":"fVvYD"}],"fVvYD":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./constants":"fVvYD"}],"gkKU3":[function(require,module,exports) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, "__esModule", {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === "default" || key === "__esModule" || dest.hasOwnProperty(key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
+
+},{}],"fVvYD":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "API_KEY", ()=>API_KEY);
 parcelHelpers.export(exports, "API_NEWS_URL", ()=>API_NEWS_URL);
 parcelHelpers.export(exports, "API_LANG", ()=>API_LANG);
+parcelHelpers.export(exports, "ARTICLE_PER_COMPONENT_HEADLINES", ()=>ARTICLE_PER_COMPONENT_HEADLINES);
+parcelHelpers.export(exports, "ARTICLE_PER_COMPONENT_OPINION", ()=>ARTICLE_PER_COMPONENT_OPINION);
+parcelHelpers.export(exports, "ARTICLE_PER_COMPONENT_SCIENCE", ()=>ARTICLE_PER_COMPONENT_SCIENCE);
+parcelHelpers.export(exports, "ARTICLE_PER_COMPONENT_GOSSIP", ()=>ARTICLE_PER_COMPONENT_GOSSIP);
+parcelHelpers.export(exports, "ARTICLE_PER_COMPONENT_LIFESTYLE", ()=>ARTICLE_PER_COMPONENT_LIFESTYLE);
+parcelHelpers.export(exports, "ARTICLE_PER_COMPONENT_MOST_VIEWED", ()=>ARTICLE_PER_COMPONENT_MOST_VIEWED);
 var _dotenv = require("dotenv");
 _dotenv.config();
 const API_KEY = "E3WfXWP03bk3bhkTBZg08WKbWvDpxabo1OzyPF18Q5Xwf0qo";
 const API_NEWS_URL = "https://api.currentsapi.services/v1";
 const API_LANG = "en";
+const ARTICLE_PER_COMPONENT_HEADLINES = 4;
+const ARTICLE_PER_COMPONENT_OPINION = 3;
+const ARTICLE_PER_COMPONENT_SCIENCE = 7;
+const ARTICLE_PER_COMPONENT_GOSSIP = 3;
+const ARTICLE_PER_COMPONENT_LIFESTYLE = 4;
+const ARTICLE_PER_COMPONENT_MOST_VIEWED = 6;
 
 },{"dotenv":"lErsX","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"lErsX":[function(require,module,exports) {
 var process = require("process");
@@ -1310,36 +1429,101 @@ exports.homedir = function() {
     return "/";
 };
 
-},{}],"gkKU3":[function(require,module,exports) {
-exports.interopDefault = function(a) {
-    return a && a.__esModule ? a : {
-        default: a
+},{}],"aqQhS":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "componentDisplayHandler", ()=>componentDisplayHandler);
+var _constants = require("./constants");
+const headlinesNewsContentElem = document.getElementById("headlinesNewsContent");
+const opinionNewsContentElem = document.getElementById("opinionNewsContent");
+const scienceNewsContentElem = document.getElementById("scienceNewsContent");
+const gossipNewsContentElem = document.getElementById("gossipNewsContent");
+const lifestyleNewsContentElem = document.getElementById("lifestyleNewsContent");
+const mostViewedNewsContentElem = document.getElementById("mostViewedNewsContent");
+const artElemClassIdentPostfix_IMAGE = "__image";
+const artElemClassIdentPostfix_TITLE = "__article__title";
+const artElemClassIdentPostfix_PUBDATE = "__article__pub__date";
+const artElemClassIdentPostfix_AUTHOR = "__article__author";
+const componentDisplayHandler = {
+    displayHeadlines: (articles)=>{
+        const headlineItem = {
+            parentElement: headlinesNewsContentElem,
+            reqNoOfArt: (0, _constants.ARTICLE_PER_COMPONENT_HEADLINES),
+            ...getArticleElementIdentificationDetails("headlines")
+        };
+        populateComponent(articles, headlineItem);
+    },
+    displayOpinion: (articles)=>{
+        const opinionItem = {
+            parentElement: opinionNewsContentElem,
+            reqNoOfArt: (0, _constants.ARTICLE_PER_COMPONENT_OPINION),
+            ...getArticleElementIdentificationDetails("opinion")
+        };
+        populateComponent(articles, opinionItem);
+    },
+    displayScience: (articles)=>{
+        const scienceItem = {
+            parentElement: scienceNewsContentElem,
+            reqNoOfArt: (0, _constants.ARTICLE_PER_COMPONENT_SCIENCE),
+            ...getArticleElementIdentificationDetails("science")
+        };
+        populateComponent(articles, scienceItem);
+    },
+    displayGossip: (articles)=>{
+        const gossipItem = {
+            parentElement: gossipNewsContentElem,
+            reqNoOfArt: (0, _constants.ARTICLE_PER_COMPONENT_GOSSIP),
+            ...getArticleElementIdentificationDetails("gossip")
+        };
+        populateComponent(articles, gossipItem);
+    },
+    displayLifestyle: (articles)=>{
+        const lifestyleItem = {
+            parentElement: lifestyleNewsContentElem,
+            reqNoOfArt: (0, _constants.ARTICLE_PER_COMPONENT_LIFESTYLE),
+            ...getArticleElementIdentificationDetails("lifestyle")
+        };
+        populateComponent(articles, lifestyleItem);
+    },
+    displayMostViewed: (articles)=>{
+        const mostViewedItem = {
+            parentElement: mostViewedNewsContentElem,
+            reqNoOfArt: (0, _constants.ARTICLE_PER_COMPONENT_MOST_VIEWED),
+            ...getArticleElementIdentificationDetails("most__viewed")
+        };
+        populateComponent(articles, mostViewedItem);
+    }
+};
+const populateComponent = (articles, artElemIdentificationDetails)=>{
+    const imageElem = artElemIdentificationDetails.parentElement?.getElementsByClassName(artElemIdentificationDetails.image);
+    const articleTitleElem = artElemIdentificationDetails.parentElement?.getElementsByClassName(artElemIdentificationDetails.title);
+    const articlePubDateElem = artElemIdentificationDetails.parentElement?.getElementsByClassName(artElemIdentificationDetails.pubDate);
+    const authorElem = artElemIdentificationDetails.parentElement?.getElementsByClassName(artElemIdentificationDetails.author);
+    if (articles.length >= artElemIdentificationDetails.reqNoOfArt) {
+        imageElem && [
+            ...imageElem
+        ].forEach((elem, index)=>elem.setAttribute("src", articles[index].image));
+        articleTitleElem && [
+            ...articleTitleElem
+        ].forEach((elem, index)=>elem.textContent = articles[index].title);
+        articlePubDateElem && [
+            ...articlePubDateElem
+        ].forEach((elem, index)=>elem.textContent = articles[index].published.split(" ")[0].replaceAll("-", "/"));
+        authorElem && [
+            ...authorElem
+        ].forEach((elem, index)=>elem.textContent = articles[index].author);
+    }
+};
+const getArticleElementIdentificationDetails = (keyword)=>{
+    const item = {
+        image: keyword.concat(artElemClassIdentPostfix_IMAGE),
+        title: keyword.concat(artElemClassIdentPostfix_TITLE),
+        pubDate: keyword.concat(artElemClassIdentPostfix_PUBDATE),
+        author: keyword.concat(artElemClassIdentPostfix_AUTHOR)
     };
-};
-exports.defineInteropFlag = function(a) {
-    Object.defineProperty(a, "__esModule", {
-        value: true
-    });
-};
-exports.exportAll = function(source, dest) {
-    Object.keys(source).forEach(function(key) {
-        if (key === "default" || key === "__esModule" || dest.hasOwnProperty(key)) return;
-        Object.defineProperty(dest, key, {
-            enumerable: true,
-            get: function() {
-                return source[key];
-            }
-        });
-    });
-    return dest;
-};
-exports.export = function(dest, destName, get) {
-    Object.defineProperty(dest, destName, {
-        enumerable: true,
-        get: get
-    });
+    return item;
 };
 
-},{}]},["8qw7y","3rz9v"], "3rz9v", "parcelRequire94c2")
+},{"./constants":"fVvYD","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["8qw7y","3rz9v"], "3rz9v", "parcelRequire94c2")
 
 //# sourceMappingURL=index.a2a37aa4.js.map
