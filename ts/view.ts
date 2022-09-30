@@ -1,4 +1,5 @@
 import { ARTICLE_PER_COMPONENT_GOSSIP, ARTICLE_PER_COMPONENT_HEADLINES, ARTICLE_PER_COMPONENT_LIFESTYLE, ARTICLE_PER_COMPONENT_MOST_VIEWED, ARTICLE_PER_COMPONENT_OPINION, ARTICLE_PER_COMPONENT_SCIENCE } from "./constants";
+import { localStorageService } from "./services";
 import { ArtElemIdentificationDetails } from "./types";
 
 const headlinesNewsContentElem = document.getElementById("headlinesNewsContent");
@@ -15,6 +16,7 @@ const artElemClassIdentPostfix_AUTHOR = "__article__author";
 
 //TODO FIGURE OUT HOW TO REFACTOR DISPLAY METHODS
 export const componentDisplayHandler = {
+
   displayHeadlines: (articles: Array<any>) => {
     const headlineItem: ArtElemIdentificationDetails = {
       parentElement: headlinesNewsContentElem,
@@ -79,12 +81,35 @@ const populateComponent = (articles: Array<any>, artElemIdentificationDetails: A
     const articleTitleElem = artElemIdentificationDetails.parentElement?.getElementsByClassName(artElemIdentificationDetails.title);
     const articlePubDateElem = artElemIdentificationDetails.parentElement?.getElementsByClassName(artElemIdentificationDetails.pubDate);
     const authorElem = artElemIdentificationDetails.parentElement?.getElementsByClassName(artElemIdentificationDetails.author);
+
+    const favoriteButtonElem = artElemIdentificationDetails.parentElement?.getElementsByClassName("favorite__button");
+    
     if (articles.length >= artElemIdentificationDetails.reqNoOfArt) {
       imageElem && [...imageElem].forEach((elem: HTMLImageElement, index: number) => elem.setAttribute("src", articles[index].image));
       articleTitleElem && [...articleTitleElem].forEach((elem: HTMLAnchorElement, index: number) => elem.textContent = articles[index].title);
       articlePubDateElem && [...articlePubDateElem].forEach((elem, index: number) => elem.textContent = articles[index].published.split(" ")[0].replaceAll('-', '/'));
       authorElem && [...authorElem].forEach((elem, index: number) => elem.textContent = articles[index].author);
+      favoriteButtonElem && [...favoriteButtonElem].forEach((elem, index:number) => {
+        const article = articles[index];
+        elem.addEventListener("click", (event:Event & {target:Element}) => {
+
+          toggleClass(event.target, "fa-regular", "fa-solid");
+
+          const foundArticle = localStorageService.getData().find((favArticle:any) => favArticle.id === article.id);
+          if(!foundArticle) {
+            localStorageService.setData([...localStorageService.getData(), article]);
+          }
+        }); 
+      });
     };
+};
+
+const toggleClass = (element: Element, firstClass:string, secondClass:string) => {
+  if(element.classList.contains(firstClass)){
+    element.classList.replace(firstClass, secondClass);
+  } else{
+    element.classList.replace(secondClass, firstClass);
+  }
 };
 
 const getArticleElementIdentificationDetails = (keyword: string): ArtElemIdentificationDetails => {

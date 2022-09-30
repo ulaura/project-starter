@@ -535,6 +535,9 @@ function hmrAcceptRun(bundle, id) {
 var _constants = require("./constants");
 var _services = require("./services");
 var _view = require("./view");
+//toggle button
+const toggle = document.getElementById("toggle");
+toggle.addEventListener("click", ()=>toggle.classList.toggle("active"));
 //TODO FIGURE OUT HOW TO REFACTOR INIT METHODS
 const init = ()=>{
     const urlDetails = [
@@ -552,6 +555,7 @@ const init = ()=>{
             ])
         }, 
     ];
+    (0, _services.localStorageService).initializeData();
     urlDetails.forEach(async (detail)=>{
         const articles = await getArticles(detail);
         (0, _view.componentDisplayHandler).displayHeadlines(articles);
@@ -656,8 +660,18 @@ init();
 },{"./services":"jH38A","./constants":"fVvYD","./view":"aqQhS"}],"jH38A":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "localStorageService", ()=>localStorageService);
 parcelHelpers.export(exports, "getNews", ()=>getNews);
 var _constants = require("./constants");
+const NAME = "news";
+const storage = window.localStorage;
+const localStorageService = {
+    initializeData: ()=>{
+        if (storage.getItem(NAME) === null || (0, _constants.CLEAR__STORAGE)) storage.setItem(NAME, JSON.stringify([]));
+    },
+    getData: ()=>JSON.parse(storage.getItem(NAME)),
+    setData: (data)=>storage.setItem("news", JSON.stringify(data))
+};
 const getNews = async (action, params = new Map)=>{
     params.set("language", `${(0, _constants.API_LANG)}`);
     params.set("apiKey", `${(0, _constants.API_KEY)}`);
@@ -705,6 +719,7 @@ exports.export = function(dest, destName, get) {
 },{}],"fVvYD":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "CLEAR__STORAGE", ()=>CLEAR__STORAGE);
 parcelHelpers.export(exports, "API_KEY", ()=>API_KEY);
 parcelHelpers.export(exports, "API_NEWS_URL", ()=>API_NEWS_URL);
 parcelHelpers.export(exports, "API_LANG", ()=>API_LANG);
@@ -716,6 +731,7 @@ parcelHelpers.export(exports, "ARTICLE_PER_COMPONENT_LIFESTYLE", ()=>ARTICLE_PER
 parcelHelpers.export(exports, "ARTICLE_PER_COMPONENT_MOST_VIEWED", ()=>ARTICLE_PER_COMPONENT_MOST_VIEWED);
 var _dotenv = require("dotenv");
 _dotenv.config();
+const CLEAR__STORAGE = false;
 const API_KEY = "E3WfXWP03bk3bhkTBZg08WKbWvDpxabo1OzyPF18Q5Xwf0qo";
 const API_NEWS_URL = "https://api.currentsapi.services/v1";
 const API_LANG = "en";
@@ -1434,6 +1450,7 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "componentDisplayHandler", ()=>componentDisplayHandler);
 var _constants = require("./constants");
+var _services = require("./services");
 const headlinesNewsContentElem = document.getElementById("headlinesNewsContent");
 const opinionNewsContentElem = document.getElementById("opinionNewsContent");
 const scienceNewsContentElem = document.getElementById("scienceNewsContent");
@@ -1499,6 +1516,7 @@ const populateComponent = (articles, artElemIdentificationDetails)=>{
     const articleTitleElem = artElemIdentificationDetails.parentElement?.getElementsByClassName(artElemIdentificationDetails.title);
     const articlePubDateElem = artElemIdentificationDetails.parentElement?.getElementsByClassName(artElemIdentificationDetails.pubDate);
     const authorElem = artElemIdentificationDetails.parentElement?.getElementsByClassName(artElemIdentificationDetails.author);
+    const favoriteButtonElem = artElemIdentificationDetails.parentElement?.getElementsByClassName("favorite__button");
     if (articles.length >= artElemIdentificationDetails.reqNoOfArt) {
         imageElem && [
             ...imageElem
@@ -1512,7 +1530,24 @@ const populateComponent = (articles, artElemIdentificationDetails)=>{
         authorElem && [
             ...authorElem
         ].forEach((elem, index)=>elem.textContent = articles[index].author);
+        favoriteButtonElem && [
+            ...favoriteButtonElem
+        ].forEach((elem, index)=>{
+            const article = articles[index];
+            elem.addEventListener("click", (event)=>{
+                toggleClass(event.target, "fa-regular", "fa-solid");
+                const foundArticle = (0, _services.localStorageService).getData().find((favArticle)=>favArticle.id === article.id);
+                if (!foundArticle) (0, _services.localStorageService).setData([
+                    ...(0, _services.localStorageService).getData(),
+                    article
+                ]);
+            });
+        });
     }
+};
+const toggleClass = (element, firstClass, secondClass)=>{
+    if (element.classList.contains(firstClass)) element.classList.replace(firstClass, secondClass);
+    else element.classList.replace(secondClass, firstClass);
 };
 const getArticleElementIdentificationDetails = (keyword)=>{
     const item = {
@@ -1524,6 +1559,6 @@ const getArticleElementIdentificationDetails = (keyword)=>{
     return item;
 };
 
-},{"./constants":"fVvYD","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["8qw7y","3rz9v"], "3rz9v", "parcelRequire94c2")
+},{"./constants":"fVvYD","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./services":"jH38A"}]},["8qw7y","3rz9v"], "3rz9v", "parcelRequire94c2")
 
 //# sourceMappingURL=index.a2a37aa4.js.map

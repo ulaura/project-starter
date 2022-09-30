@@ -12,6 +12,8 @@
 			crossorigin="anonymous"
 		/>
 		<link rel="stylesheet" href="./css/main.css" />
+		<link rel="stylesheet" href="./node_modules/@fortawesome/fontawesome-free/css/all.min.css" />
+		<link rel="stylesheet" href="./node_modules/@fortawesome/fontawesome-free/css/fontawesome.min.css" />
 		<script type="module" src="./ts/main.ts" defer></script>
 	</head>
 	<body>
@@ -41,6 +43,8 @@
 				</select>
 				<a href="./post.html" class="no__style__link">Account</a>
 			</div>
+
+			<div id="toggle"></div>
 		</header>
 		<main class="page__content">
 			<section class="mt-5 px-3">
@@ -62,32 +66,32 @@
 							<a href="./post.html" class="no__style__link text-light fw-bold fs-5 fs__smaller headlines__article__title">
 								Reactive JavaScript: The evolution of front-end architecture
 							</a>
-							<span class="favorite__news"><i class="fa-solid fa-heart favorite__button"></i></span>
+							<span class="favorite__news"><i class="fa-regular fa-heart favorite__button"></i></span>
 							<small class="text-muted d-block mt-1 headlines__article__pub__date">no_date</small>
 						</div>
 					</div>
 					<div class="d-flex flex-column w-50 border-start border-2 pt-4 ps-3 full__width px__none bx__none">
-						<div>
+						<div class="position-relative">
 							<a href="./post.html" class="no__style__link fw-bold headlines__article__title"
 								>How to diploy with Vercel and MongoDB Atlas without even
 								trying</a
 							>
-							<span class="favorite__news"><i class="fa-solid fa-heart favorite__button"></i></span>
+							<span class="favorite__news"><i class="fa-regular fa-heart favorite__button"></i></span>
 							<small class="text-muted d-block mt-1 headlines__article__pub__date">no_date</small>
 						</div>
-						<div class="mt-4">
+						<div class="mt-4 position-relative">
 							<a href="./post.html" class="no__style__link fw-bold headlines__article__title"
 								>ECMAScript 2022 blesses class elements, top-level await</a
 							>
-							<span class="favorite__news"><i class="fa-solid fa-heart favorite__button"></i></span>
+							<span class="favorite__news"><i class="fa-regular fa-heart favorite__button"></i></span>
 							<small class="text-muted d-block mt-1 headlines__article__pub__date">no_date</small>
 						</div>
-						<div class="mt-4">
+						<div class="mt-4 position-relative">
 							<a href="./post.html" class="no__style__link fw-bold headlines__article__title"
 								>What is Jamstack? The static website revolution upending web
 								development</a
 							>
-							<span class="favorite__news"><i class="fa-solid fa-heart favorite__button"></i></span>
+							<span class="favorite__news"><i class="fa-regular fa-heart favorite__button"></i></span>
 							<small class="text-muted d-block mt-1 headlines__article__pub__date">no_date</small>
 						</div>
 					</div>
@@ -103,7 +107,7 @@
 					<a href="./post.html" class="text-dark">View all</a>
 				</header>
 				<section class="d-flex direction__column" id="opinionNewsContent">
-					<article class="width__one__third bx__none full__width pt-3 px-3">
+					<article class="width__one__third bx__none full__width pt-3 px-3 position-relative">
 						<header>
 							<img
 								src="https://i.ytimg.com/vi/LKnpNihhppo/maxresdefault.jpg"
@@ -116,11 +120,11 @@
 							Misko Hevery, the creator of AngularJS, is a Senior Computer
 							Scientist at Google.
 						</p>
-						<span class="favorite__news"><i class="fa-solid fa-heart"></i></span>
+						<span class="favorite__news"><i class="fa-regular fa-heart favorite__button"></i></span>
 						<small class="text-muted d-block opinion__article__pub__date">no_date</small>
 					</article>
 					<article
-						class="width__one__third bx__none full__width pt-3 border-start border-end border-2 px-3"
+						class="width__one__third bx__none full__width pt-3 border-start border-end border-2 px-3 position-relative"
 					>
 						<header>
 							<img
@@ -134,11 +138,11 @@
 							React was originally created by Jordan Walke. Today, React has
 							over a thousand open source contributors.
 						</p>
-						<span class="favorite__news"><i class="fa-solid fa-heart"></i></span>
+						<span class="favorite__news"><i class="fa-regular fa-heart favorite__button"></i></span>
 						<small class="text-muted d-block opinion__article__pub__date">no_date</small>
 					</article>
 					<article
-						class="width__one__third bx__none full__width pt-3 px-3"
+						class="width__one__third bx__none full__width pt-3 px-3 position-relative"
 					>
 						<header>
 							<img
@@ -152,7 +156,7 @@
 							The HyperText Markup Language or HTML is the standard markup
 							language for documents designed to be displayed in a web browser.
 						</p>
-						<span class="favorite__news"><i class="fa-solid fa-heart"></i></span>
+						<span class="favorite__news"><i class="fa-regular fa-heart favorite__button"></i></span>
 						<small class="text-muted d-block opinion__article__pub__date">no_date</small>
 					</article>
 				</section>
@@ -167,7 +171,7 @@
 					<a href="./post.html" class="text-dark">View all</a>
 				</header>
 				<section class="d-flex direction__column" id="scienceNewsContent">
-					<article class="pt-4 w-50 pe-3 px__none full__width">
+					<article class="pt-4 w-50 pe-3 px__none full__width position-relative">
 						<header>
 							<img
 								src="https://images.unsplash.com/photo-1568952433726-3896e3881c65?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NTB8fGl0JTIwc2NpZW5jZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
@@ -180,45 +184,52 @@
 								>Quantum Digits Unlock More Computational Power With Fewer
 								Quantum Particles</a
 							>
+							<span class="favorite__news"><i class="fa-regular fa-heart favorite__button"></i></span>
 							<small class="d-block text-muted mt-2 science__article__pub__date">no_date</small>
 						</div>
 					</article>
 					<section class="w-50 border-start border-2 ps-3 pt-3 px__none full__width bx__none">
-						<article>
+						<article class="position-relative">
 							<a href="./post.html" class="no__style__link fw-bold science__article__title"
 								>Robot Dog Learns to Walk in One Hour
 							</a>
+							<span class="favorite__news"><i class="fa-regular fa-heart favorite__button"></i></span>
 							<small class="d-block text-muted mt-2 science__article__pub__date">no_date</small>
 						</article>
-						<article class="mt-2">
+						<article class="mt-2 position-relative">
 							<a href="./post.html" class="no__style__link fw-bold science__article__title"
 								>Humans in the Loop Help Robots Find Their Way
 							</a>
+							<span class="favorite__news"><i class="fa-regular fa-heart favorite__button"></i></span>
 							<small class="d-block text-muted mt-2 science__article__pub__date">no_date</small>
 						</article>
-						<article class="mt-2">
+						<article class="mt-2 position-relative">
 							<a href="./post.html" class="no__style__link fw-bold science__article__title"
 								>Engineers Develop Stickers That Can See Inside the Body
 							</a>
+							<span class="favorite__news"><i class="fa-regular fa-heart favorite__button"></i></span>
 							<small class="d-block text-muted mt-2 science__article__pub__date">no_date</small>
 						</article>
-						<article class="mt-2">
+						<article class="mt-2 position-relative">
 							<a href="./post.html" class="no__style__link fw-bold science__article__title"
 								>Alexa and Siri, Listen Up! Teaching Machines to Really Hear Us
 							</a>
+							<span class="favorite__news"><i class="fa-regular fa-heart favorite__button"></i></span>
 							<small class="d-block text-muted mt-2 science__article__pub__date">no_date</small>
 						</article>
-						<article class="mt-2">
+						<article class="mt-2 position-relative">
 							<a href="./post.html" class="no__style__link fw-bold science__article__title"
 								>Algorithms Help to Distinguish Diseases at the Molecular Level
 							</a>
+							<span class="favorite__news"><i class="fa-regular fa-heart favorite__button"></i></span>
 							<small class="d-block text-muted mt-2 science__article__pub__date">no_date</small>
 						</article>
-						<article class="mt-2">
+						<article class="mt-2 position-relative">
 							<a href="./post.html" class="no__style__link fw-bold science__article__title"
 								>Scientists discovers new properties of magnetism that could
 								change our computers
 							</a>
+							<span class="favorite__news"><i class="fa-regular fa-heart favorite__button"></i></span>
 							<small class="d-block text-muted mt-2 science__article__pub__date">no_date</small>
 						</article>
 					</section>
@@ -234,7 +245,7 @@
 					<a href="./post.html" class="text-dark">View all</a>
 				</header>
 				<section class="d-flex gossip__split direction__column" id="gossipNewsContent">
-					<article class="w-75 mt-4 pe-3 px__none full__width">
+					<article class="w-75 mt-4 pe-3 px__none full__width position-relative">
 						<header>
 							<img
 								src="https://images.unsplash.com/photo-1653836592205-d80d575d6b3c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTd8fHByb2dyYW1taW5nJTIwc2NpZW5jZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
@@ -247,11 +258,12 @@
 								>A 'Nano-Robot' Built Entirely from DNA to Explore Cell
 								Processes</a
 							>
+							<span class="favorite__news"><i class="fa-regular fa-heart favorite__button"></i></span>
 							<small class="d-block text-muted mt-2 gossip__article__pub__date">no_date</small>
 						</div>
 					</article>
 					<section class="w-25 border-start border-2 pt-4 ps-3 full__width px__none bx__none">
-						<article class="">
+						<article class="position-relative">
 							<header>
 								<img
 									src="https://images.unsplash.com/photo-1546410531-bb4caa6b424d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Njh8fHByb2dyYW1taW5nJTIwbGFuZ3VhZ2VzfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60"
@@ -263,10 +275,11 @@
 								<a href="./post.html" class="no__style__link fw-bold gossip__article__title"
 									>Mathematical Paradoxes Demonstrate the Limits of AI</a
 								>
+								<span class="favorite__news"><i class="fa-regular fa-heart favorite__button"></i></span>
 								<small class="d-block text-muted mt-2 gossip__article__pub__date">no_date</small>
 							</div>
 						</article>
-						<article class="mt-3">
+						<article class="mt-3 position-relative">
 							<header>
 								<img
 									src="https://images.unsplash.com/photo-1524666643752-b381eb00effb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NDR8fHByb2dyYW1taW5nJTIwaHRtbHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
@@ -278,6 +291,7 @@
 								<a href="./post.html" class="no__style__link fw-bold gossip__article__title"
 									>The best new CSS features for 2022</a
 								>
+								<span class="favorite__news"><i class="fa-regular fa-heart favorite__button"></i></span>
 								<small class="d-block text-muted mt-2 gossip__article__pub__date">no_date</small>
 							</div>
 						</article>
@@ -293,7 +307,7 @@
 					<hr class="w-75 m-0 media__no__width" />
 					<a href="./post.html" class="text-dark">View all</a>
 				</header>
-				<article class="mb-3 px-3 mt-4 lifestyle__article__display" >
+				<article class="mb-3 px-3 mt-4 lifestyle__article__display position-relative" >
 					<header>
 						<img
 							class="w-100 lifestyle__image"
@@ -306,12 +320,13 @@
 							>The 9 Best Programming Books to Read Right Now if You Want to
 							Distinguish Yourself</a
 						>
+						<span class="favorite__news"><i class="fa-regular fa-heart favorite__button"></i></span>
 						<small class="d-block text-muted mt-2 lifestyle__article__pub__date">no_date</small>
 					</div>
 				</article>
 				<hr class="m-0 mx-3 hr__visibility" />
 				<section class="d-flex direction__column">
-					<article class="width__one__third pt-3 px-3 full__width">
+					<article class="width__one__third pt-3 px-3 full__width position-relative">
 						<header>
 							<img
 								src="https://images.unsplash.com/photo-1507721999472-8ed4421c4af2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTJ8fHByb2dyYW1taW5nJTIwYm9va3N8ZW58MHx8MHx8&auto=format&fit=crop&w=500&q=60"
@@ -324,11 +339,12 @@
 								>There are two ways to write error-free programs; only the third
 								works.
 							</a>
+							<span class="favorite__news"><i class="fa-regular fa-heart favorite__button"></i></span>
 							<small class="d-block text-muted mt-2 lifestyle__article__pub__date">no_date</small>
 						</div>
 					</article>
 					<article
-						class="width__one__third border-start border-end border-2 pt-3 px-3 bx__none full__width"
+						class="width__one__third border-start border-end border-2 pt-3 px-3 bx__none full__width position-relative"
 					>
 						<header>
 							<img
@@ -342,11 +358,12 @@
 								>Programming isn't about what you know; it's about what you can
 								figure out.
 							</a>
+							<span class="favorite__news"><i class="fa-regular fa-heart favorite__button"></i></span>
 							<small class="d-block text-muted mt-2 lifestyle__article__pub__date">no_date</small>
 						</div>
 					</article>
 					<article
-						class="width__one__third pt-3 px-3 full__width"
+						class="width__one__third pt-3 px-3 full__width position-relative"
 					>
 						<header>
 							<img
@@ -359,6 +376,7 @@
 							<a href="./post.html" class="no__style__link fw-bold lifestyle__article__title"
 								>Testing leads to failure, and failure leads to understanding.
 							</a>
+							<span class="favorite__news"><i class="fa-regular fa-heart favorite__button"></i></span>
 							<small class="d-block text-muted mt-2 lifestyle__article__pub__date">no_date</small>
 						</div>
 					</article>
@@ -378,54 +396,61 @@
 					<section
 						class="w-75 me-3 most__viewed__section__grid full__width"
 					>
-						<article class="most__viewed__article">
+						<article class="most__viewed__article position-relative">
 							<a href="./post.html" class="no__style__link fw-bold most__viewed__article__title">
 								lo Humans Can't Be the Sole Keepers of Scientific Knowledge</a>
+							<span class="favorite__news"><i class="fa-regular fa-heart favorite__button"></i></span>
 							<small class="d-block text-muted mt-2">
 								<span class="most__viewed__article__author">no_author</span>
 								<span>-</span> 
 								<span class="text-muted  most__viewed__article__pub__date">no_date</span>
 							</small>
 						</article>
-						<article class="most__viewed__article">
+						<article class="most__viewed__article position-relative">
 							<a href="./post.html" class="no__style__link fw-bold most__viewed__article__title"
 								>AI Can Write Code Like Humans—Bugs and All</a
-							><small class="d-block text-muted mt-2">
+							>
+							<span class="favorite__news"><i class="fa-regular fa-heart favorite__button"></i></span>
+							<small class="d-block text-muted mt-2">
 								<span class="most__viewed__article__author">no_author</span>
 								<span>-</span>
 								<span class="most__viewed__article__pub__date" >no_date</span>
 							</small>
 						</article>
-						<article class="most__viewed__article">
+						<article class="most__viewed__article position-relative">
 							<a href="./post.html" class="no__style__link fw-bold most__viewed__article__title"
 								>Computer Scientists Find a Key Research Algorithm's Limits</a>
+								<span class="favorite__news"><i class="fa-regular fa-heart favorite__button"></i></span>
 								<small class="d-block text-muted mt-2">
 								<span class="most__viewed__article__author">no_author</span>
 								<span>-</span>
 								<span class="most__viewed__article__pub__date" >no_date</span>
 							</small>
 						</article>
-						<article class="most__viewed__article">
+						<article class="most__viewed__article position-relative">
 							<a href="./post.html" class="no__style__link fw-bold most__viewed__article__title"
 								>GitHub's Commercial AI Tool Was Built From Open Source Code</a>
+								<span class="favorite__news"><i class="fa-regular fa-heart favorite__button"></i></span>
 								<small class="d-block text-muted mt-2">
 								<span class="most__viewed__article__author">no_author</span>
 								<span>-</span>
 								<span class="most__viewed__article__pub__date" >no_date</span>
 							</small>
 						</article>
-						<article class="most__viewed__article">
+						<article class="most__viewed__article position-relative">
 							<a href="./post.html" class="no__style__link fw-bold most__viewed__article__title"
 								>You're Probably Not Using the Web's Best Browser</a>
+								<span class="favorite__news"><i class="fa-regular fa-heart favorite__button"></i></span>
 								<small  class="d-block text-muted mt-2" >
 								<span class="most__viewed__article__author">no_author</span>
 								<span>-</span>
 								<span class="most__viewed__article__pub__date" >no_date</span>
 							</small>
 						</article>
-						<article class="most__viewed__article">
+						<article class="most__viewed__article position-relative">
 							<a href="./post.html" class="no__style__link fw-bold most__viewed__article__title"
 								>The JavaScript Framework That Puts Web Pages on a Diet</a>
+								<span class="favorite__news"><i class="fa-regular fa-heart favorite__button"></i></span>
 								<small class="d-block text-muted mt-2">
 								<span class="most__viewed__article__author">no_author</span>
 								<span>-</span>

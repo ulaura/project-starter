@@ -1,13 +1,20 @@
 import { ARTICLE_PER_COMPONENT_GOSSIP, ARTICLE_PER_COMPONENT_HEADLINES, ARTICLE_PER_COMPONENT_LIFESTYLE, ARTICLE_PER_COMPONENT_MOST_VIEWED, ARTICLE_PER_COMPONENT_OPINION, ARTICLE_PER_COMPONENT_SCIENCE } from './constants';
-import {getNews} from './services'
+import {getNews, localStorageService} from './services'
 import { URLDetails } from './types';
 import { componentDisplayHandler } from './view';
+
+//toggle button
+const toggle = document.getElementById("toggle")
+toggle.addEventListener("click", () => toggle.classList.toggle("active"));
+
 
 //TODO FIGURE OUT HOW TO REFACTOR INIT METHODS
 const init = () => {
     const urlDetails = [
         {endpoint: "search",queryParams: new Map([["keywords", "headlines"], ["limit", `${ARTICLE_PER_COMPONENT_HEADLINES}`]])},
     ]
+    
+    localStorageService.initializeData()
 
     urlDetails.forEach(async (detail) => {
         const articles = await getArticles(detail);
