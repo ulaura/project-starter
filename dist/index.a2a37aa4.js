@@ -734,10 +734,10 @@ var _constants = require("./constants");
 const storage = window.localStorage;
 const storageService = {
     initializeDataForFavoriteArticles: ()=>{
-        if (storage.getItem((0, _constants.LOCAL_STORAGE_NAME)) === null) storage.setItem((0, _constants.LOCAL_STORAGE_NAME), JSON.stringify([]));
+        if (storage.getItem((0, _constants.LOCAL_STORAGE_FAVORITE)) === null) storage.setItem((0, _constants.LOCAL_STORAGE_FAVORITE), JSON.stringify([]));
     },
-    getData: (storageName)=>JSON.parse(storage.getItem(storageName ? storageName : (0, _constants.LOCAL_STORAGE_NAME))),
-    setData: (data, storageName)=>storage.setItem(storageName ? storageName : (0, _constants.LOCAL_STORAGE_NAME), JSON.stringify(data))
+    getData: (storageName)=>JSON.parse(storage.getItem(storageName)),
+    setData: (storageName, data)=>storage.setItem(storageName, JSON.stringify(data))
 };
 const dataService = {
     fetchData: async (action, params = new Map)=>{
@@ -745,7 +745,7 @@ const dataService = {
         const storageData = storageService.getData(`${keyword}`);
         if (!storageData) {
             const response = await dataService.makeRequest(action, params);
-            storageService.setData(response, `${keyword}`);
+            storageService.setData(`${keyword}`, response);
             return response;
         }
         return storageData;
@@ -781,7 +781,7 @@ const cacheData = ()=>{
                 `${(0, _constants.ARTICLE_PER_COMPONENT_HEADLINES)}`
             ]
         ]));
-        storageService.setData(headlinesSectionContent, (0, _constants.HEADLINES_SECTION_CONTENT));
+        storageService.setData((0, _constants.HEADLINES_SECTION_CONTENT), headlinesSectionContent);
         const lifestyleSectionContent = await dataService.makeRequest("search", new Map([
             [
                 "keywords",
@@ -792,7 +792,7 @@ const cacheData = ()=>{
                 `${(0, _constants.ARTICLE_PER_COMPONENT_LIFESTYLE)}`
             ]
         ]));
-        storageService.setData(lifestyleSectionContent, (0, _constants.LIFESTYLE_SECTION_CONTENT));
+        storageService.setData((0, _constants.LIFESTYLE_SECTION_CONTENT), lifestyleSectionContent);
         const opinionSectionContent = await dataService.makeRequest("search", new Map([
             [
                 "keywords",
@@ -803,7 +803,7 @@ const cacheData = ()=>{
                 `${(0, _constants.ARTICLE_PER_COMPONENT_OPINION)}`
             ]
         ]));
-        storageService.setData(opinionSectionContent, (0, _constants.OPINION_SECTION_CONTENT));
+        storageService.setData((0, _constants.OPINION_SECTION_CONTENT), opinionSectionContent);
         const scienceSectionContent = await dataService.makeRequest("search", new Map([
             [
                 "keywords",
@@ -814,7 +814,7 @@ const cacheData = ()=>{
                 `${(0, _constants.ARTICLE_PER_COMPONENT_SCIENCE)}`
             ]
         ]));
-        storageService.setData(scienceSectionContent, (0, _constants.SCIENCE_SECTION_CONTENT));
+        storageService.setData((0, _constants.SCIENCE_SECTION_CONTENT), scienceSectionContent);
         const gossipSectionContent = await dataService.makeRequest("search", new Map([
             [
                 "keywords",
@@ -825,7 +825,7 @@ const cacheData = ()=>{
                 `${(0, _constants.ARTICLE_PER_COMPONENT_GOSSIP)}`
             ]
         ]));
-        storageService.setData(gossipSectionContent, (0, _constants.GOSSIP_SECTION_CONTENT));
+        storageService.setData((0, _constants.GOSSIP_SECTION_CONTENT), gossipSectionContent);
         const mostViewedSectionContent = await dataService.makeRequest("search", new Map([
             [
                 "keywords",
@@ -836,13 +836,15 @@ const cacheData = ()=>{
                 `${(0, _constants.ARTICLE_PER_COMPONENT_MOST_VIEWED)}`
             ]
         ]));
-        storageService.setData(mostViewedSectionContent, (0, _constants.MOST_VIEWED_SECTION_CONTENT));
+        storageService.setData((0, _constants.MOST_VIEWED_SECTION_CONTENT), mostViewedSectionContent);
         console.log("Data CACHED");
         cacheData();
-    // caching every 31 minutes 1900000
-    // caching every 5 minutes 300000
-    // caching every 10 minutes 600000
-    }, 600000);
+    // caching every 2 minutes 120000 milliseconds
+    // caching every 3 minutes 180000 milliseconds
+    // caching every 5 minutes 300000 milliseconds
+    // caching every 10 minutes 600000 milliseconds
+    // caching every 31 minutes 1900000 milliseconds
+    }, 120000);
 };
 cacheData();
 
@@ -855,7 +857,7 @@ parcelHelpers.export(exports, "SCIENCE_SECTION_CONTENT", ()=>SCIENCE_SECTION_CON
 parcelHelpers.export(exports, "GOSSIP_SECTION_CONTENT", ()=>GOSSIP_SECTION_CONTENT);
 parcelHelpers.export(exports, "LIFESTYLE_SECTION_CONTENT", ()=>LIFESTYLE_SECTION_CONTENT);
 parcelHelpers.export(exports, "MOST_VIEWED_SECTION_CONTENT", ()=>MOST_VIEWED_SECTION_CONTENT);
-parcelHelpers.export(exports, "LOCAL_STORAGE_NAME", ()=>LOCAL_STORAGE_NAME);
+parcelHelpers.export(exports, "LOCAL_STORAGE_FAVORITE", ()=>LOCAL_STORAGE_FAVORITE);
 parcelHelpers.export(exports, "API_KEY", ()=>API_KEY);
 parcelHelpers.export(exports, "API_NEWS_URL", ()=>API_NEWS_URL);
 parcelHelpers.export(exports, "API_LANG", ()=>API_LANG);
@@ -873,7 +875,7 @@ const SCIENCE_SECTION_CONTENT = "science";
 const GOSSIP_SECTION_CONTENT = "gossip";
 const LIFESTYLE_SECTION_CONTENT = "lifestyle";
 const MOST_VIEWED_SECTION_CONTENT = "programming";
-const LOCAL_STORAGE_NAME = "articles";
+const LOCAL_STORAGE_FAVORITE = "articles";
 const API_KEY = "E3WfXWP03bk3bhkTBZg08WKbWvDpxabo1OzyPF18Q5Xwf0qo";
 const API_NEWS_URL = "https://api.currentsapi.services/v1";
 const API_LANG = "en";
@@ -1620,53 +1622,7 @@ const pageContent = {
     }
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../favorite/favorite-page":"fqRu1","../home/home-page":"4MabB"}],"fqRu1":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "favoritePage", ()=>favoritePage);
-var _services = require("../../services");
-const favoritePage = {
-    getContent: ()=>{
-        const favoriteAricles = (0, _services.storageService).getData();
-        const favArticlesHtml = favoriteAricles.map((favArt)=>{
-            return `
-          <section class="d-flex p-3 shadow-sm ">
-          <header class="me-3 col-md-4">
-              <img class="img-thumbnail" src="${favArt.image}" alt="">
-          </header>
-          <article>
-              <h3 class="fw-bold">${favArt.title}</h3>
-              <p>${favArt.description}</p>
-              <small>
-                  <span>${favArt.author}</span>
-                  - 
-                  <span>${favArt.published.split(" ")[0].replaceAll("-", "/")}</span>
-              </small>
-              <span class="align-self-end"><i id="favx_${favArt.id}" class="fav-article-remove fa-solid fa-xmark"></i></span>
-          </article>
-          </section>
-          `;
-        });
-        return `
-        <section id="favoritePage">
-            ${favArticlesHtml.join("")}
-        </section>`;
-    },
-    initEventHandlers: (parentComponent)=>{
-        const favArticleButtons = document.getElementsByClassName("fav-article-remove");
-        [
-            ...favArticleButtons
-        ].forEach((elem)=>{
-            elem.addEventListener("click", (event)=>{
-                const favoriteArticleId = event.target.id.split("_")[1];
-                (0, _services.storageService).setData((0, _services.storageService).getData().filter((favArt)=>favArt.id !== favoriteArticleId));
-                parentComponent.displayContent("favorite");
-            });
-        });
-    }
-};
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../../services":"jH38A"}],"4MabB":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../home/home-page":"4MabB","../favorite/favorite-page":"fqRu1"}],"4MabB":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "homePage", ()=>homePage);
@@ -1679,6 +1635,7 @@ var _opinion = require("./sections/opinion");
 var _science = require("./sections/science");
 var _utils = require("../../utils");
 var _services = require("../../services");
+var _constants = require("../../constants");
 const HOME_PAGE_ID = "homePage";
 const homePage = {
     getContent: async ()=>{
@@ -1714,22 +1671,22 @@ const favoriteButton_onClick = (articles, parentElementId)=>{
         elem.addEventListener("click", (event)=>{
             (0, _utils.exchangeClass)(event.target, "fa-regular", "fa-solid");
             const articleId = event.target.id.split("_")[1];
-            const foundData = (0, _services.storageService).getData().find((favArticle)=>favArticle.id === articleId);
+            const foundData = (0, _services.storageService).getData((0, _constants.LOCAL_STORAGE_FAVORITE)).find((favArticle)=>favArticle.id === articleId);
             //if article does not exists add it to local storage else remove
             if (!foundData) {
                 const article = articles.find((art)=>art.id === articleId);
-                (0, _services.storageService).setData([
-                    ...(0, _services.storageService).getData(),
+                (0, _services.storageService).setData((0, _constants.LOCAL_STORAGE_FAVORITE), [
+                    ...(0, _services.storageService).getData((0, _constants.LOCAL_STORAGE_FAVORITE)),
                     article
                 ]);
-            } else (0, _services.storageService).setData([
-                ...(0, _services.storageService).getData()
+            } else (0, _services.storageService).setData((0, _constants.LOCAL_STORAGE_FAVORITE), [
+                ...(0, _services.storageService).getData((0, _constants.LOCAL_STORAGE_FAVORITE))
             ].filter((favArticle)=>favArticle.id !== articleId));
         });
     });
 };
 
-},{"./sections/headlines":"dmbJl","../../utils":"e4Zav","../../services":"jH38A","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./sections/gossip":"g7Q1K","./sections/lifestyle":"dPSRZ","./sections/most-viewed":"1av6B","./sections/opinion":"9xPzw","./sections/science":"11ZKW","./sections/now":"3dM7L"}],"dmbJl":[function(require,module,exports) {
+},{"./sections/headlines":"dmbJl","../../utils":"e4Zav","../../services":"jH38A","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./sections/gossip":"g7Q1K","./sections/lifestyle":"dPSRZ","./sections/most-viewed":"1av6B","./sections/opinion":"9xPzw","./sections/science":"11ZKW","./sections/now":"3dM7L","../../constants":"fVvYD"}],"dmbJl":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "headlines", ()=>headlines);
@@ -2275,6 +2232,53 @@ const nowSection = {
     }
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["8qw7y","3rz9v"], "3rz9v", "parcelRequire94c2")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"fqRu1":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "favoritePage", ()=>favoritePage);
+var _constants = require("../../constants");
+var _services = require("../../services");
+const favoritePage = {
+    getContent: ()=>{
+        const favoriteArticles = (0, _services.storageService).getData((0, _constants.LOCAL_STORAGE_FAVORITE));
+        const favArticlesHtml = favoriteArticles.map((favArt)=>{
+            return `
+          <section class="d-flex p-3 shadow-sm ">
+          <header class="me-3 col-md-4">
+              <img class="img-thumbnail" src="${favArt.image}" alt="">
+          </header>
+          <article>
+              <h3 class="fw-bold">${favArt.title}</h3>
+              <p>${favArt.description}</p>
+              <small>
+                  <span>${favArt.author}</span>
+                  - 
+                  <span>${favArt.published.split(" ")[0].replaceAll("-", "/")}</span>
+              </small>
+              <span class="align-self-end"><i id="favx_${favArt.id}" class="fav-article-remove fa-solid fa-xmark"></i></span>
+          </article>
+          </section>
+          `;
+        });
+        return `
+        <section id="favoritePage">
+            ${favArticlesHtml.join("")}
+        </section>`;
+    },
+    initEventHandlers: (parentComponent)=>{
+        const favArticleButtons = document.getElementsByClassName("fav-article-remove");
+        [
+            ...favArticleButtons
+        ].forEach((elem)=>{
+            elem.addEventListener("click", (event)=>{
+                const favoriteArticleId = event.target.id.split("_")[1];
+                (0, _services.storageService).setData((0, _constants.LOCAL_STORAGE_FAVORITE), (0, _services.storageService).getData((0, _constants.LOCAL_STORAGE_FAVORITE)).filter((favArt)=>favArt.id !== favoriteArticleId));
+                parentComponent.displayContent("favorite");
+            });
+        });
+    }
+};
+
+},{"../../services":"jH38A","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../../constants":"fVvYD"}]},["8qw7y","3rz9v"], "3rz9v", "parcelRequire94c2")
 
 //# sourceMappingURL=index.a2a37aa4.js.map

@@ -7,6 +7,7 @@ import { opinion } from "./sections/opinion";
 import { science } from "./sections/science";
 import { exchangeClass, pageLoader } from "../../utils";
 import {storageService } from "../../services";
+import { LOCAL_STORAGE_FAVORITE } from "../../constants";
 
 const HOME_PAGE_ID = "homePage";
 
@@ -57,14 +58,14 @@ const favoriteButton_onClick = (articles: Array<any>, parentElementId: string) =
             exchangeClass(event.target, "fa-regular", "fa-solid");
 
             const articleId = event.target.id.split("_")[1];
-            const foundData = storageService.getData().find((favArticle: any) => favArticle.id === articleId);
+            const foundData = storageService.getData(LOCAL_STORAGE_FAVORITE).find((favArticle: any) => favArticle.id === articleId);
             
             //if article does not exists add it to local storage else remove
             if (!foundData) {
                 const article = articles.find((art: any) => art.id === articleId);    
-                storageService.setData([...storageService.getData(), article]);
+                storageService.setData(LOCAL_STORAGE_FAVORITE, [...storageService.getData(LOCAL_STORAGE_FAVORITE), article],);
             } else {
-                storageService.setData([...storageService.getData()].filter((favArticle: any) => favArticle.id !== articleId))
+                storageService.setData(LOCAL_STORAGE_FAVORITE, [...storageService.getData(LOCAL_STORAGE_FAVORITE)].filter((favArticle: any) => favArticle.id !== articleId))
             }
         });
     });

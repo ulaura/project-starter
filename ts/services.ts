@@ -1,6 +1,6 @@
 import { API_KEY, API_LANG, API_NEWS_URL, ARTICLE_PER_COMPONENT_GOSSIP, ARTICLE_PER_COMPONENT_HEADLINES, ARTICLE_PER_COMPONENT_LIFESTYLE, ARTICLE_PER_COMPONENT_MOST_VIEWED, ARTICLE_PER_COMPONENT_OPINION, ARTICLE_PER_COMPONENT_SCIENCE, GOSSIP_SECTION_CONTENT, HEADLINES_SECTION_CONTENT, LIFESTYLE_SECTION_CONTENT, MOST_VIEWED_SECTION_CONTENT, OPINION_SECTION_CONTENT, SCIENCE_SECTION_CONTENT } from "./constants";
 import { ApiRequestDetails } from "./types";
-import { LOCAL_STORAGE_NAME as FAVORITE_ARTICLES_LOCAL_STORAGE_NAME } from './constants';
+import { LOCAL_STORAGE_FAVORITE as FAVORITE_ARTICLES_LOCAL_STORAGE_NAME } from './constants';
 
 const storage = window.localStorage;
 
@@ -10,8 +10,8 @@ export const storageService = {
       storage.setItem(FAVORITE_ARTICLES_LOCAL_STORAGE_NAME, JSON.stringify([]));
     }
   },
-  getData: (storageName?: string) => JSON.parse(storage.getItem(storageName ? storageName : FAVORITE_ARTICLES_LOCAL_STORAGE_NAME)),
-  setData: (data:any, storageName?: string) => storage.setItem(storageName ? storageName : FAVORITE_ARTICLES_LOCAL_STORAGE_NAME, JSON.stringify(data)),
+  getData: (storageName: string) => JSON.parse(storage.getItem(storageName)),
+  setData: (storageName: string, data:any) => storage.setItem(storageName, JSON.stringify(data)),
 };
 
 export const dataService = {
@@ -21,7 +21,7 @@ export const dataService = {
         const storageData = storageService.getData(`${keyword}`);
         if(!storageData) {
           const response = await dataService.makeRequest(action, params);
-          storageService.setData(response, `${keyword}`);
+          storageService.setData(`${keyword}`, response);
           return response;
         }
         return storageData;
@@ -53,23 +53,25 @@ const cacheData = () => {
   setTimeout( async () => {
     console.log("STARTED CACHING");
     const headlinesSectionContent =  await dataService.makeRequest("search", new Map([["keywords", HEADLINES_SECTION_CONTENT], ["limit", `${ARTICLE_PER_COMPONENT_HEADLINES}`]]));
-    storageService.setData(headlinesSectionContent, HEADLINES_SECTION_CONTENT);
+    storageService.setData(HEADLINES_SECTION_CONTENT, headlinesSectionContent);
     const lifestyleSectionContent =  await dataService.makeRequest("search",new Map([["keywords", LIFESTYLE_SECTION_CONTENT], ["limit", `${ARTICLE_PER_COMPONENT_LIFESTYLE}`]]));
-    storageService.setData(lifestyleSectionContent, LIFESTYLE_SECTION_CONTENT);
+    storageService.setData(LIFESTYLE_SECTION_CONTENT, lifestyleSectionContent);
     const opinionSectionContent =  await dataService.makeRequest("search",new Map([["keywords", OPINION_SECTION_CONTENT], ["limit", `${ARTICLE_PER_COMPONENT_OPINION}`]]));
-    storageService.setData(opinionSectionContent, OPINION_SECTION_CONTENT);
+    storageService.setData(OPINION_SECTION_CONTENT, opinionSectionContent);
     const scienceSectionContent =  await dataService.makeRequest("search", new Map([["keywords", SCIENCE_SECTION_CONTENT], ["limit", `${ARTICLE_PER_COMPONENT_SCIENCE}`]]));
-    storageService.setData(scienceSectionContent, SCIENCE_SECTION_CONTENT);
+    storageService.setData(SCIENCE_SECTION_CONTENT, scienceSectionContent);
     const gossipSectionContent =  await dataService.makeRequest("search",new Map([["keywords", GOSSIP_SECTION_CONTENT], ["limit", `${ARTICLE_PER_COMPONENT_GOSSIP}`]]));
-    storageService.setData(gossipSectionContent, GOSSIP_SECTION_CONTENT);
+    storageService.setData(GOSSIP_SECTION_CONTENT, gossipSectionContent);
     const mostViewedSectionContent =  await dataService.makeRequest("search",new Map([["keywords", MOST_VIEWED_SECTION_CONTENT], ["limit", `${ARTICLE_PER_COMPONENT_MOST_VIEWED}`]]));
-    storageService.setData(mostViewedSectionContent, MOST_VIEWED_SECTION_CONTENT);
+    storageService.setData(MOST_VIEWED_SECTION_CONTENT, mostViewedSectionContent);
     console.log("Data CACHED");
     cacheData();
-    // caching every 31 minutes 1900000
-    // caching every 5 minutes 300000
-    // caching every 10 minutes 600000
-  }, 600000)
+    // caching every 2 minutes 120000 milliseconds
+    // caching every 3 minutes 180000 milliseconds
+    // caching every 5 minutes 300000 milliseconds
+    // caching every 10 minutes 600000 milliseconds
+    // caching every 31 minutes 1900000 milliseconds
+  }, 120000)
 }
 
 cacheData();

@@ -1,3 +1,4 @@
+import { LOCAL_STORAGE_FAVORITE } from "../../constants";
 import { storageService } from "../../services";
 
 export const favoritePage = {
@@ -5,9 +6,9 @@ export const favoritePage = {
     getContent: (): string => {
 
 
-        const favoriteAricles = storageService.getData();
+        const favoriteArticles = storageService.getData(LOCAL_STORAGE_FAVORITE);
         
-        const favArticlesHtml = favoriteAricles.map((favArt:any) => {
+        const favArticlesHtml = favoriteArticles.map((favArt:any) => {
             return  `
           <section class="d-flex p-3 shadow-sm ">
           <header class="me-3 col-md-4">
@@ -41,7 +42,7 @@ export const favoritePage = {
         [...favArticleButtons].forEach((elem: any) => {
             elem.addEventListener("click", (event: any) => {
                 const favoriteArticleId = event.target.id.split("_")[1];
-                storageService.setData(storageService.getData().filter((favArt: any) => favArt.id !== favoriteArticleId ));
+                storageService.setData(LOCAL_STORAGE_FAVORITE ,storageService.getData(LOCAL_STORAGE_FAVORITE).filter((favArt: any) => favArt.id !== favoriteArticleId ));
                 parentComponent.displayContent("favorite");
             });
         });
