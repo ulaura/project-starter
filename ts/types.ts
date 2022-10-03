@@ -1,13 +1,5 @@
-export interface ArtElemIdentificationDetails {
-    parentElement?: Element,
-    reqNoOfArt?: number,
-    image:string,
-    title: string,
-    pubDate: string,
-    author?: string
-}
 
-export interface URLDetails {
+export interface ApiRequestDetails {
     endpoint:string,
     queryParams: Map<string,  string | number> ,
 }

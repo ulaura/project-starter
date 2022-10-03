@@ -25,13 +25,52 @@
 	width: 150px;
 }
 
-.page__content {
+.root {
 	width: 1000px;
 	margin: auto;
 }
 
 .link__cnt {
 	width: 400px;
+}
+
+.nav__display {
+	display: block!important;
+	transition: all 5s ease-in;
+	position: absolute;
+
+	top: 100%;
+	left: auto;
+	background-color: #fff;
+	box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+
+.nav__display ul {
+	
+	display: flex!important;
+	flex-direction: column;
+}
+
+.nav__display ul li {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	font-weight: bold;
+	height: 50px;
+}
+
+.nav__display ul li:hover {
+	background-color: #00646b;
+}
+
+.nav__display ul li:hover a {
+	color: white;
+}
+
+.nav__display ul li a {
+	display: flex;
+	align-items: center;
 }
 
 .set__position {
@@ -90,53 +129,87 @@
 
 /* style toggle elem */
 
-#toggle {
+.toggle {
 	position: relative;
 	width: 50px;
 	height: 50px;
-	background-color: #043304;
+	background-color: #fff;
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	cursor: pointer;
 }
 
-#toggle.active {
+.toggle_wrapper {
+	display: none;
+}
+
+/* #toggle.active {
 	background-color: #000;
-}
+} */
 
-#toggle::before {
+.toggle::before {
 	content: '';
 	position: absolute;
 	width: 28px;
 	height: 2px;
-	background: #fff;
+	background: #000;
 	transition: .2s;
 	transform: translateY(-10px);
-	box-shadow: 0 10px 0 #fff;
+	box-shadow: 0 10px 0 #000;
 }
 
-#toggle.active::before {
+.toggle.active::before {
 	transform: translateY(0) rotate(45deg);
-	box-shadow: 0 0 0 #fff;
+	box-shadow: 0 0 0 #000;
 }
 
-#toggle::after {
+.toggle::after {
 	content: '';
 	position: absolute;
 	width: 28px;
 	height: 2px;
-	background: #fff;
+	background: #000;
 	transition: .2s;
 	transform: translateY(10px);
 }
 
-#toggle.active::after {
+.toggle.active::after {
 	transform: translateY(0) rotate(-45deg);
 }
 
+.hidden {
+	display: none;
+}
+
+/* region spinner */
+
+.loader {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: auto;
+	border: 20px solid #EAF0F6;
+	border-radius: 50%;
+	border-top: 20px solid #108ad1;
+	width: 150px;
+	height: 150px;
+	animation: spinner 2s linear infinite;
+  }
+  
+  @keyframes spinner {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+  }
+
+
+ .page__content {
+	min-height: 1000px;
+ }
+
 
 @media screen and (max-width: 1096px) {
-	.page__content {
+	.root {
 		width: 100%;
 		margin: 0;
 	}
@@ -169,6 +242,7 @@
 	}
 }
 
+
 @media screen and (max-width: 900px) {
 	.page__header {
 		flex-direction: column;
@@ -178,6 +252,16 @@
 		margin-top: 0;
 		margin-bottom: 1rem;
 	}
+
+	.toggle_wrapper {
+		margin-top: 10px;
+		display: block;
+	}
+
+	.nav__bar {
+		display: none;
+	}
+
 }
 
 @media screen and (max-width: 715px) {

@@ -18,13 +18,49 @@
   width: 150px;
 }
 
-.page__content {
+.root {
   width: 1000px;
   margin: auto;
 }
 
 .link__cnt {
   width: 400px;
+}
+
+.nav__display {
+  background-color: #fff;
+  transition: all 5s ease-in;
+  position: absolute;
+  top: 100%;
+  left: auto;
+  box-shadow: 0 2px 8px #63636333;
+  display: block !important;
+}
+
+.nav__display ul {
+  flex-direction: column;
+  display: flex !important;
+}
+
+.nav__display ul li {
+  width: 100%;
+  height: 50px;
+  justify-content: center;
+  font-weight: bold;
+  display: flex;
+}
+
+.nav__display ul li:hover {
+  background-color: #00646b;
+}
+
+.nav__display ul li:hover a {
+  color: #fff;
+}
+
+.nav__display ul li a {
+  align-items: center;
+  display: flex;
 }
 
 .set__position {
@@ -77,52 +113,84 @@
   right: 0;
 }
 
-#toggle {
+.toggle {
   width: 50px;
   height: 50px;
-  background-color: #043304;
+  cursor: pointer;
+  background-color: #fff;
   justify-content: center;
   align-items: center;
   display: flex;
   position: relative;
 }
 
-#toggle.active {
-  background-color: #000;
+.toggle_wrapper {
+  display: none;
 }
 
-#toggle:before {
+.toggle:before {
   content: "";
   width: 28px;
   height: 2px;
-  background: #fff;
+  background: #000;
   transition: all .2s;
   position: absolute;
   transform: translateY(-10px);
-  box-shadow: 0 10px #fff;
+  box-shadow: 0 10px #000;
 }
 
-#toggle.active:before {
+.toggle.active:before {
   transform: translateY(0)rotate(45deg);
-  box-shadow: 0 0 #fff;
+  box-shadow: 0 0 #000;
 }
 
-#toggle:after {
+.toggle:after {
   content: "";
   width: 28px;
   height: 2px;
-  background: #fff;
+  background: #000;
   transition: all .2s;
   position: absolute;
   transform: translateY(10px);
 }
 
-#toggle.active:after {
+.toggle.active:after {
   transform: translateY(0)rotate(-45deg);
 }
 
+.hidden {
+  display: none;
+}
+
+.loader {
+  width: 150px;
+  height: 150px;
+  border: 20px solid #eaf0f6;
+  border-top-color: #108ad1;
+  border-radius: 50%;
+  margin: auto;
+  animation: 2s linear infinite spinner;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.page__content {
+  min-height: 1000px;
+}
+
 @media screen and (max-width: 1096px) {
-  .page__content {
+  .root {
     width: 100%;
     margin: 0;
   }
@@ -164,6 +232,15 @@
   .mx__logo {
     margin-top: 0;
     margin-bottom: 1rem;
+  }
+
+  .toggle_wrapper {
+    margin-top: 10px;
+    display: block;
+  }
+
+  .nav__bar {
+    display: none;
   }
 }
 

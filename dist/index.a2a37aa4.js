@@ -532,161 +532,107 @@ function hmrAcceptRun(bundle, id) {
 }
 
 },{}],"3rz9v":[function(require,module,exports) {
-var _constants = require("./constants");
+var _pageContent = require("./components/content/page-content");
+var _pageFooter = require("./components/page-footer");
+var _pageHeader = require("./components/page-header");
 var _services = require("./services");
-var _view = require("./view");
-//toggle button
-const toggle = document.getElementById("toggle");
-toggle.addEventListener("click", ()=>toggle.classList.toggle("active"));
-//TODO FIGURE OUT HOW TO REFACTOR INIT METHODS
-const init = ()=>{
-    const urlDetails = [
-        {
-            endpoint: "search",
-            queryParams: new Map([
-                [
-                    "keywords",
-                    "headlines"
-                ],
-                [
-                    "limit",
-                    `${(0, _constants.ARTICLE_PER_COMPONENT_HEADLINES)}`
-                ]
-            ])
-        }, 
-    ];
-    (0, _services.localStorageService).initializeData();
-    urlDetails.forEach(async (detail)=>{
-        const articles = await getArticles(detail);
-        (0, _view.componentDisplayHandler).displayHeadlines(articles);
-    });
-    initOpinion();
-    initScience();
-    initGossip();
-    initLifestyle();
-    initMostViewed();
+const root = document.getElementById("root");
+//TODOs
+//1. Learn how to use classes, interfaces and inheritance for components
+const init = async ()=>{
+    (0, _services.storageService).initializeDataForFavoriteArticles();
+    root.innerHTML += (0, _pageHeader.pageHeader).getContent();
+    root.innerHTML += await (0, _pageContent.pageContent).getContent();
+    root.innerHTML += (0, _pageFooter.pageFooter).getContent();
+    (0, _pageHeader.pageHeader).initEventHandlers(displayFavoritePage, displayNewsPage);
+    (0, _pageContent.pageContent).initEventHandlers();
+    (0, _pageFooter.pageFooter).initEventHandlers();
 };
-const initOpinion = async ()=>{
-    const urlDetails = {
-        endpoint: "search",
-        queryParams: new Map([
-            [
-                "keywords",
-                "opinion"
-            ],
-            [
-                "limit",
-                `${(0, _constants.ARTICLE_PER_COMPONENT_OPINION)}`
-            ]
-        ])
-    };
-    const articles = await getArticles(urlDetails);
-    (0, _view.componentDisplayHandler).displayOpinion(articles);
+const displayFavoritePage = ()=>{
+    (0, _pageContent.pageContent).displayContent("favorite");
 };
-const initScience = async ()=>{
-    const urlDetails = {
-        endpoint: "search",
-        queryParams: new Map([
-            [
-                "keywords",
-                "science"
-            ],
-            [
-                "limit",
-                `${(0, _constants.ARTICLE_PER_COMPONENT_SCIENCE)}`
-            ]
-        ])
-    };
-    const articles = await getArticles(urlDetails);
-    (0, _view.componentDisplayHandler).displayScience(articles);
-};
-const initGossip = async ()=>{
-    const urlDetails = {
-        endpoint: "search",
-        queryParams: new Map([
-            [
-                "keywords",
-                "gossip"
-            ],
-            [
-                "limit",
-                `${(0, _constants.ARTICLE_PER_COMPONENT_GOSSIP)}`
-            ]
-        ])
-    };
-    const articles = await getArticles(urlDetails);
-    (0, _view.componentDisplayHandler).displayGossip(articles);
-};
-const initLifestyle = async ()=>{
-    const urlDetails = {
-        endpoint: "search",
-        queryParams: new Map([
-            [
-                "keywords",
-                "lifestyle"
-            ],
-            [
-                "limit",
-                `${(0, _constants.ARTICLE_PER_COMPONENT_LIFESTYLE)}`
-            ]
-        ])
-    };
-    const articles = await getArticles(urlDetails);
-    (0, _view.componentDisplayHandler).displayLifestyle(articles);
-};
-const initMostViewed = async ()=>{
-    const urlDetails = {
-        endpoint: "search",
-        queryParams: new Map([
-            [
-                "keywords",
-                "programming"
-            ],
-            [
-                "limit",
-                `${(0, _constants.ARTICLE_PER_COMPONENT_MOST_VIEWED)}`
-            ]
-        ])
-    };
-    const articles = await getArticles(urlDetails);
-    (0, _view.componentDisplayHandler).displayMostViewed(articles);
-};
-const getArticles = async (urlDetails)=>{
-    const { news  } = await (0, _services.getNews)(urlDetails.endpoint, urlDetails.queryParams);
-    return news.filter((article)=>article.image !== "None").filter((article, index)=>index < Number(urlDetails.queryParams.get("limit")));
+const displayNewsPage = ()=>{
+    (0, _pageContent.pageContent).displayContent("home");
 };
 init();
 
-},{"./services":"jH38A","./constants":"fVvYD","./view":"aqQhS"}],"jH38A":[function(require,module,exports) {
+},{"./components/page-footer":"8zx2A","./components/page-header":"g2WZS","./services":"jH38A","./components/content/page-content":"4H7nw"}],"8zx2A":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "localStorageService", ()=>localStorageService);
-parcelHelpers.export(exports, "getNews", ()=>getNews);
-var _constants = require("./constants");
-const NAME = "news";
-const storage = window.localStorage;
-const localStorageService = {
-    initializeData: ()=>{
-        if (storage.getItem(NAME) === null || (0, _constants.CLEAR__STORAGE)) storage.setItem(NAME, JSON.stringify([]));
+parcelHelpers.export(exports, "pageFooter", ()=>pageFooter);
+const pageFooter = {
+    getContent: ()=>{
+        return `
+        <div class="px-3">
+        <footer class="mt-5 shadow p-4 bg-light">
+            <section class="d-flex justify-content-between media__header__wrap">
+                <div class="d-flex flex-column width__one__third">
+                    <img
+                        class="logo mb-4"
+                        src="https://static.skyassets.com/contentstack/assets/bltdc2476c7b6b194dd/blt60b2d631fdc493bf/605083db32845c7ca164859d/NOW_Logo_Solid_Gradient_131x42mm_RGB-1.png"
+                        alt="now"
+                    />
+                    <a href="./post.html" class="display__text__blue">Subscribe</a>
+                    <a href="./post.html" class="display__text__blue">Contribute</a>
+                </div>
+
+                <section class="width__one__third">
+                    <ul class="list__no__style">
+                        <li><a href="./post.html" class="no__style__link">Contact us</a></li>
+                        <li>
+                            <a href="./post.html" class="no__style__link"
+                                >Complaints & corrections</a
+                            >
+                        </li>
+                        <li><a href="./post.html" class="no__style__link">SecureDrop</a></li>
+                        <li class="mb-4">
+                            <a href="./post.html" class="no__style__link">Work for us</a>
+                        </li>
+                        <li><a href="./post.html" class="no__style__link">Pivacy settings</a></li>
+                        <li><a href="./post.html" class="no__style__link">Privacy policy</a></li>
+                        <li><a href="./post.html" class="no__style__link">Cookie policy</a></li>
+                        <li>
+                            <a href="./post.html" class="no__style__link">Terms & conditions</a>
+                        </li>
+                        <li><a href="./post.html" class="no__style__link">Help</a></li>
+                        <li>
+                            <a href="./post.html" class="no__style__link">Advertise with us</a>
+                        </li>
+                    </ul>
+                </section>
+
+                <section class="width__one__third">
+                    <ul class="list__no__style">
+                        <li><a href="./post.html" class="no__style__link">All topics</a></li>
+                        <li><a href="./post.html" class="no__style__link">All writers</a></li>
+                        <li class="mb-4">
+                            <a href="./post.html" class="no__style__link"
+                                >Digital newspaper archive</a
+                            >
+                        </li>
+                        <li><a href="./post.html" class="no__style__link">Facebook</a></li>
+                        <li><a href="./post.html" class="no__style__link">Youtube</a></li>
+                        <li><a href="./post.html" class="no__style__link">Instagram</a></li>
+                        <li><a href="./post.html" class="no__style__link">Linkedin</a></li>
+                        <li><a href="./post.html" class="no__style__link">Twitter</a></li>
+                        <li class="mb-4">
+                            <a href="./post.html" class="no__style__link">Newsletters</a>
+                        </li>
+                        <li><a href="./post.html" class="no__style__link">Search UK jobs</a></li>
+                    </ul>
+                </section>
+            </section>
+            <small>© 2022 Company, Inc. All rights reserved</small>
+        </footer>
+    </div>
+        `;
     },
-    getData: ()=>JSON.parse(storage.getItem(NAME)),
-    setData: (data)=>storage.setItem("news", JSON.stringify(data))
-};
-const getNews = async (action, params = new Map)=>{
-    params.set("language", `${(0, _constants.API_LANG)}`);
-    params.set("apiKey", `${(0, _constants.API_KEY)}`);
-    const apiParams = new Array;
-    params.forEach((value, key)=>{
-        apiParams.push(`${key}=${value}`);
-    });
-    const strParams = apiParams.join("&");
-    const url = `${(0, _constants.API_NEWS_URL)}/${action}?${strParams}`;
-    let response = await fetch(url);
-    let news = response.json();
-    return news;
+    initEventHandlers: ()=>{
+        console.log("No event handlers to initialize for page-footer component");
+    }
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./constants":"fVvYD"}],"gkKU3":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -716,10 +662,200 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}],"fVvYD":[function(require,module,exports) {
+},{}],"g2WZS":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "CLEAR__STORAGE", ()=>CLEAR__STORAGE);
+parcelHelpers.export(exports, "pageHeader", ()=>pageHeader);
+const FAVORITE_PAGE_ID = "favoritesPageNav";
+const HOME_PAGE_ID = "homePageNav";
+const pageHeader = {
+    getContent: ()=>{
+        return `
+        <header class="d-flex justify-content-around py-3 align-items-center page__header">
+            <img class="logo mx__logo" src="https://static.skyassets.com/contentstack/assets/bltdc2476c7b6b194dd/blt60b2d631fdc493bf/605083db32845c7ca164859d/NOW_Logo_Solid_Gradient_131x42mm_RGB-1.png" alt="now" />
+            <nav id="navigationBar" class="nav__bar">
+                <ul class="link__cnt__display link__cnt list__no__style d-flex justify-content-between mb-0">
+                    <li><a href="./post.html" class="no__style__link" id="${HOME_PAGE_ID}">News</a></li>
+                    <li><a href="./post.html" class="no__style__link">Opinion</a></li>
+                    <li><a href="./post.html" class="no__style__link">Sport</a></li>
+                    <li><a href="./post.html" class="no__style__link">Culture</a></li>
+                    <li><a href="#" class="no__style__link">Lifestyle</a></li>
+                    <li><a href="#" class="no__style__link" id="${FAVORITE_PAGE_ID}">Favorites</a></li>
+                </ul>
+            </nav>
+            <div class="d-flex align-items-center">
+                <select class="form-select me-3">
+                    <option>EN</option>
+                    <option>ES</option>
+                    <option>DE</option>
+                </select>
+                <a href="./post.html" class="no__style__link">Account</a>
+            </div>
+            <div class="toggle_wrapper">
+                <div id="burgerButton" class="toggle"></div>
+            </div>
+        </header>`;
+    },
+    initEventHandlers: (favoritesPage_onClick, newsPage_onClick)=>{
+        addFavoritePageHandler(favoritesPage_onClick);
+        addBurgerButtonHandler();
+        addNewPageHandler(newsPage_onClick);
+    }
+};
+const addNewPageHandler = (newsPage_onClick)=>{
+    const homePageElem = document.getElementById(HOME_PAGE_ID);
+    homePageElem.addEventListener("click", (event)=>{
+        event.preventDefault();
+        newsPage_onClick();
+    });
+};
+const addFavoritePageHandler = (favoritesPage_onClick)=>{
+    const favoritesPageElem = document.getElementById(FAVORITE_PAGE_ID);
+    favoritesPageElem.addEventListener("click", (event)=>{
+        event.preventDefault();
+        favoritesPage_onClick();
+    });
+};
+const addBurgerButtonHandler = ()=>{
+    const navigationBarElem = document.getElementById("navigationBar");
+    const burgerButton = document.getElementById("burgerButton");
+    burgerButton.addEventListener("click", ()=>{
+        burgerButton.classList.toggle("active");
+        navigationBarElem.classList.toggle("nav__display");
+    });
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"jH38A":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "storageService", ()=>storageService);
+parcelHelpers.export(exports, "dataService", ()=>dataService);
+var _constants = require("./constants");
+const storage = window.localStorage;
+const storageService = {
+    initializeDataForFavoriteArticles: ()=>{
+        if (storage.getItem((0, _constants.LOCAL_STORAGE_NAME)) === null) storage.setItem((0, _constants.LOCAL_STORAGE_NAME), JSON.stringify([]));
+    },
+    getData: (storageName)=>JSON.parse(storage.getItem(storageName ? storageName : (0, _constants.LOCAL_STORAGE_NAME))),
+    setData: (data, storageName)=>storage.setItem(storageName ? storageName : (0, _constants.LOCAL_STORAGE_NAME), JSON.stringify(data))
+};
+const dataService = {
+    fetchData: async (action, params = new Map)=>{
+        let keyword = params.get("keywords");
+        const storageData = storageService.getData(`${keyword}`);
+        if (!storageData) {
+            const response = await dataService.makeRequest(action, params);
+            storageService.setData(response, `${keyword}`);
+            return response;
+        }
+        return storageData;
+    },
+    makeRequest: async (action, params = new Map)=>{
+        params.set("language", `${(0, _constants.API_LANG)}`);
+        params.set("apiKey", `${(0, _constants.API_KEY)}`);
+        const apiParams = new Array;
+        params.forEach((value, key)=>{
+            apiParams.push(`${key}=${value}`);
+        });
+        const strParams = apiParams.join("&");
+        const url = `${(0, _constants.API_NEWS_URL)}/${action}?${strParams}`;
+        let response = await fetch(url);
+        let news = response.json();
+        return news;
+    },
+    getData: async (requestDetails)=>{
+        const { news  } = await dataService.fetchData(requestDetails.endpoint, requestDetails.queryParams);
+        return news.filter((article)=>article.image !== "None").filter((article, index)=>index < Number(requestDetails.queryParams.get("limit")));
+    }
+};
+const cacheData = ()=>{
+    setTimeout(async ()=>{
+        console.log("STARTED CACHING");
+        const headlinesSectionContent = await dataService.makeRequest("search", new Map([
+            [
+                "keywords",
+                (0, _constants.HEADLINES_SECTION_CONTENT)
+            ],
+            [
+                "limit",
+                `${(0, _constants.ARTICLE_PER_COMPONENT_HEADLINES)}`
+            ]
+        ]));
+        storageService.setData(headlinesSectionContent, (0, _constants.HEADLINES_SECTION_CONTENT));
+        const lifestyleSectionContent = await dataService.makeRequest("search", new Map([
+            [
+                "keywords",
+                (0, _constants.LIFESTYLE_SECTION_CONTENT)
+            ],
+            [
+                "limit",
+                `${(0, _constants.ARTICLE_PER_COMPONENT_LIFESTYLE)}`
+            ]
+        ]));
+        storageService.setData(lifestyleSectionContent, (0, _constants.LIFESTYLE_SECTION_CONTENT));
+        const opinionSectionContent = await dataService.makeRequest("search", new Map([
+            [
+                "keywords",
+                (0, _constants.OPINION_SECTION_CONTENT)
+            ],
+            [
+                "limit",
+                `${(0, _constants.ARTICLE_PER_COMPONENT_OPINION)}`
+            ]
+        ]));
+        storageService.setData(opinionSectionContent, (0, _constants.OPINION_SECTION_CONTENT));
+        const scienceSectionContent = await dataService.makeRequest("search", new Map([
+            [
+                "keywords",
+                (0, _constants.SCIENCE_SECTION_CONTENT)
+            ],
+            [
+                "limit",
+                `${(0, _constants.ARTICLE_PER_COMPONENT_SCIENCE)}`
+            ]
+        ]));
+        storageService.setData(scienceSectionContent, (0, _constants.SCIENCE_SECTION_CONTENT));
+        const gossipSectionContent = await dataService.makeRequest("search", new Map([
+            [
+                "keywords",
+                (0, _constants.GOSSIP_SECTION_CONTENT)
+            ],
+            [
+                "limit",
+                `${(0, _constants.ARTICLE_PER_COMPONENT_GOSSIP)}`
+            ]
+        ]));
+        storageService.setData(gossipSectionContent, (0, _constants.GOSSIP_SECTION_CONTENT));
+        const mostViewedSectionContent = await dataService.makeRequest("search", new Map([
+            [
+                "keywords",
+                (0, _constants.MOST_VIEWED_SECTION_CONTENT)
+            ],
+            [
+                "limit",
+                `${(0, _constants.ARTICLE_PER_COMPONENT_MOST_VIEWED)}`
+            ]
+        ]));
+        storageService.setData(mostViewedSectionContent, (0, _constants.MOST_VIEWED_SECTION_CONTENT));
+        console.log("Data CACHED");
+        cacheData();
+    // caching every 31 minutes 1900000
+    // caching every 5 minutes 300000
+    // caching every 10 minutes 600000
+    }, 600000);
+};
+cacheData();
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./constants":"fVvYD"}],"fVvYD":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "HEADLINES_SECTION_CONTENT", ()=>HEADLINES_SECTION_CONTENT);
+parcelHelpers.export(exports, "OPINION_SECTION_CONTENT", ()=>OPINION_SECTION_CONTENT);
+parcelHelpers.export(exports, "SCIENCE_SECTION_CONTENT", ()=>SCIENCE_SECTION_CONTENT);
+parcelHelpers.export(exports, "GOSSIP_SECTION_CONTENT", ()=>GOSSIP_SECTION_CONTENT);
+parcelHelpers.export(exports, "LIFESTYLE_SECTION_CONTENT", ()=>LIFESTYLE_SECTION_CONTENT);
+parcelHelpers.export(exports, "MOST_VIEWED_SECTION_CONTENT", ()=>MOST_VIEWED_SECTION_CONTENT);
+parcelHelpers.export(exports, "LOCAL_STORAGE_NAME", ()=>LOCAL_STORAGE_NAME);
 parcelHelpers.export(exports, "API_KEY", ()=>API_KEY);
 parcelHelpers.export(exports, "API_NEWS_URL", ()=>API_NEWS_URL);
 parcelHelpers.export(exports, "API_LANG", ()=>API_LANG);
@@ -731,7 +867,13 @@ parcelHelpers.export(exports, "ARTICLE_PER_COMPONENT_LIFESTYLE", ()=>ARTICLE_PER
 parcelHelpers.export(exports, "ARTICLE_PER_COMPONENT_MOST_VIEWED", ()=>ARTICLE_PER_COMPONENT_MOST_VIEWED);
 var _dotenv = require("dotenv");
 _dotenv.config();
-const CLEAR__STORAGE = false;
+const HEADLINES_SECTION_CONTENT = "headlines";
+const OPINION_SECTION_CONTENT = "opinion";
+const SCIENCE_SECTION_CONTENT = "science";
+const GOSSIP_SECTION_CONTENT = "gossip";
+const LIFESTYLE_SECTION_CONTENT = "lifestyle";
+const MOST_VIEWED_SECTION_CONTENT = "programming";
+const LOCAL_STORAGE_NAME = "articles";
 const API_KEY = "E3WfXWP03bk3bhkTBZg08WKbWvDpxabo1OzyPF18Q5Xwf0qo";
 const API_NEWS_URL = "https://api.currentsapi.services/v1";
 const API_LANG = "en";
@@ -1445,120 +1587,694 @@ exports.homedir = function() {
     return "/";
 };
 
-},{}],"aqQhS":[function(require,module,exports) {
+},{}],"4H7nw":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "componentDisplayHandler", ()=>componentDisplayHandler);
-var _constants = require("./constants");
-var _services = require("./services");
-const headlinesNewsContentElem = document.getElementById("headlinesNewsContent");
-const opinionNewsContentElem = document.getElementById("opinionNewsContent");
-const scienceNewsContentElem = document.getElementById("scienceNewsContent");
-const gossipNewsContentElem = document.getElementById("gossipNewsContent");
-const lifestyleNewsContentElem = document.getElementById("lifestyleNewsContent");
-const mostViewedNewsContentElem = document.getElementById("mostViewedNewsContent");
-const artElemClassIdentPostfix_IMAGE = "__image";
-const artElemClassIdentPostfix_TITLE = "__article__title";
-const artElemClassIdentPostfix_PUBDATE = "__article__pub__date";
-const artElemClassIdentPostfix_AUTHOR = "__article__author";
-const componentDisplayHandler = {
-    displayHeadlines: (articles)=>{
-        const headlineItem = {
-            parentElement: headlinesNewsContentElem,
-            reqNoOfArt: (0, _constants.ARTICLE_PER_COMPONENT_HEADLINES),
-            ...getArticleElementIdentificationDetails("headlines")
-        };
-        populateComponent(articles, headlineItem);
+parcelHelpers.export(exports, "pageContent", ()=>pageContent);
+var _homePage = require("../home/home-page");
+var _favoritePage = require("../favorite/favorite-page");
+const PAGE_CONTENT_ID = "pageContent";
+const pageContent = {
+    getContent: async ()=>{
+        return `
+        <section class="page__content" id="${PAGE_CONTENT_ID}">
+        ${await (0, _homePage.homePage).getContent()}
+        </section>`;
     },
-    displayOpinion: (articles)=>{
-        const opinionItem = {
-            parentElement: opinionNewsContentElem,
-            reqNoOfArt: (0, _constants.ARTICLE_PER_COMPONENT_OPINION),
-            ...getArticleElementIdentificationDetails("opinion")
-        };
-        populateComponent(articles, opinionItem);
+    initEventHandlers: ()=>{
+        (0, _homePage.homePage).initEventHandlers();
     },
-    displayScience: (articles)=>{
-        const scienceItem = {
-            parentElement: scienceNewsContentElem,
-            reqNoOfArt: (0, _constants.ARTICLE_PER_COMPONENT_SCIENCE),
-            ...getArticleElementIdentificationDetails("science")
-        };
-        populateComponent(articles, scienceItem);
-    },
-    displayGossip: (articles)=>{
-        const gossipItem = {
-            parentElement: gossipNewsContentElem,
-            reqNoOfArt: (0, _constants.ARTICLE_PER_COMPONENT_GOSSIP),
-            ...getArticleElementIdentificationDetails("gossip")
-        };
-        populateComponent(articles, gossipItem);
-    },
-    displayLifestyle: (articles)=>{
-        const lifestyleItem = {
-            parentElement: lifestyleNewsContentElem,
-            reqNoOfArt: (0, _constants.ARTICLE_PER_COMPONENT_LIFESTYLE),
-            ...getArticleElementIdentificationDetails("lifestyle")
-        };
-        populateComponent(articles, lifestyleItem);
-    },
-    displayMostViewed: (articles)=>{
-        const mostViewedItem = {
-            parentElement: mostViewedNewsContentElem,
-            reqNoOfArt: (0, _constants.ARTICLE_PER_COMPONENT_MOST_VIEWED),
-            ...getArticleElementIdentificationDetails("most__viewed")
-        };
-        populateComponent(articles, mostViewedItem);
+    displayContent: async (content)=>{
+        const pageContentElem = document.getElementById(PAGE_CONTENT_ID);
+        pageContentElem.innerHTML = "";
+        switch(content){
+            case "favorite":
+                pageContentElem.innerHTML += (0, _favoritePage.favoritePage).getContent();
+                (0, _favoritePage.favoritePage).initEventHandlers(pageContent);
+                break;
+            case "home":
+                pageContentElem.innerHTML += await (0, _homePage.homePage).getContent();
+                (0, _homePage.homePage).initEventHandlers();
+                break;
+        }
     }
 };
-const populateComponent = (articles, artElemIdentificationDetails)=>{
-    const imageElem = artElemIdentificationDetails.parentElement?.getElementsByClassName(artElemIdentificationDetails.image);
-    const articleTitleElem = artElemIdentificationDetails.parentElement?.getElementsByClassName(artElemIdentificationDetails.title);
-    const articlePubDateElem = artElemIdentificationDetails.parentElement?.getElementsByClassName(artElemIdentificationDetails.pubDate);
-    const authorElem = artElemIdentificationDetails.parentElement?.getElementsByClassName(artElemIdentificationDetails.author);
-    const favoriteButtonElem = artElemIdentificationDetails.parentElement?.getElementsByClassName("favorite__button");
-    if (articles.length >= artElemIdentificationDetails.reqNoOfArt) {
-        imageElem && [
-            ...imageElem
-        ].forEach((elem, index)=>elem.setAttribute("src", articles[index].image));
-        articleTitleElem && [
-            ...articleTitleElem
-        ].forEach((elem, index)=>elem.textContent = articles[index].title);
-        articlePubDateElem && [
-            ...articlePubDateElem
-        ].forEach((elem, index)=>elem.textContent = articles[index].published.split(" ")[0].replaceAll("-", "/"));
-        authorElem && [
-            ...authorElem
-        ].forEach((elem, index)=>elem.textContent = articles[index].author);
-        favoriteButtonElem && [
-            ...favoriteButtonElem
-        ].forEach((elem, index)=>{
-            const article = articles[index];
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../favorite/favorite-page":"fqRu1","../home/home-page":"4MabB"}],"fqRu1":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "favoritePage", ()=>favoritePage);
+var _services = require("../../services");
+const favoritePage = {
+    getContent: ()=>{
+        const favoriteAricles = (0, _services.storageService).getData();
+        const favArticlesHtml = favoriteAricles.map((favArt)=>{
+            return `
+          <section class="d-flex p-3 shadow-sm ">
+          <header class="me-3 col-md-4">
+              <img class="img-thumbnail" src="${favArt.image}" alt="">
+          </header>
+          <article>
+              <h3 class="fw-bold">${favArt.title}</h3>
+              <p>${favArt.description}</p>
+              <small>
+                  <span>${favArt.author}</span>
+                  - 
+                  <span>${favArt.published.split(" ")[0].replaceAll("-", "/")}</span>
+              </small>
+              <span class="align-self-end"><i id="favx_${favArt.id}" class="fav-article-remove fa-solid fa-xmark"></i></span>
+          </article>
+          </section>
+          `;
+        });
+        return `
+        <section id="favoritePage">
+            ${favArticlesHtml.join("")}
+        </section>`;
+    },
+    initEventHandlers: (parentComponent)=>{
+        const favArticleButtons = document.getElementsByClassName("fav-article-remove");
+        [
+            ...favArticleButtons
+        ].forEach((elem)=>{
             elem.addEventListener("click", (event)=>{
-                toggleClass(event.target, "fa-regular", "fa-solid");
-                const foundArticle = (0, _services.localStorageService).getData().find((favArticle)=>favArticle.id === article.id);
-                if (!foundArticle) (0, _services.localStorageService).setData([
-                    ...(0, _services.localStorageService).getData(),
-                    article
-                ]);
+                const favoriteArticleId = event.target.id.split("_")[1];
+                (0, _services.storageService).setData((0, _services.storageService).getData().filter((favArt)=>favArt.id !== favoriteArticleId));
+                parentComponent.displayContent("favorite");
             });
         });
     }
 };
-const toggleClass = (element, firstClass, secondClass)=>{
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../../services":"jH38A"}],"4MabB":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "homePage", ()=>homePage);
+var _gossip = require("./sections/gossip");
+var _headlines = require("./sections/headlines");
+var _lifestyle = require("./sections/lifestyle");
+var _mostViewed = require("./sections/most-viewed");
+var _now = require("./sections/now");
+var _opinion = require("./sections/opinion");
+var _science = require("./sections/science");
+var _utils = require("../../utils");
+var _services = require("../../services");
+const HOME_PAGE_ID = "homePage";
+const homePage = {
+    getContent: async ()=>{
+        (0, _utils.pageLoader).start();
+        const content = `
+        <section class="home-page" id="${HOME_PAGE_ID}">
+        ${await (0, _headlines.headlines).getContent()}
+        ${await (0, _opinion.opinion).getContent()}
+        ${await (0, _science.science).getContent()}
+        ${await (0, _gossip.gossip).getContent()}
+        ${await (0, _mostViewed.mostViewed).getContent()}
+        ${await (0, _lifestyle.lifestyle).getContent()}
+        ${(0, _now.nowSection).getContent()}
+        </section>`;
+        (0, _utils.pageLoader).stop();
+        return content;
+    },
+    initEventHandlers: ()=>{
+        (0, _headlines.headlines).initEventHandlers(favoriteButton_onClick);
+        (0, _opinion.opinion).initEventHandlers(favoriteButton_onClick);
+        (0, _science.science).initEventHandlers(favoriteButton_onClick);
+        (0, _gossip.gossip).initEventHandlers(favoriteButton_onClick);
+        (0, _lifestyle.lifestyle).initEventHandlers(favoriteButton_onClick);
+        (0, _mostViewed.mostViewed).initEventHandlers(favoriteButton_onClick);
+    }
+};
+const favoriteButton_onClick = (articles, parentElementId)=>{
+    const headlinesContentElem = document.getElementById(parentElementId);
+    const favoriteButtons = headlinesContentElem.getElementsByClassName("favorite__button");
+    favoriteButtons && [
+        ...favoriteButtons
+    ].forEach((elem)=>{
+        elem.addEventListener("click", (event)=>{
+            (0, _utils.exchangeClass)(event.target, "fa-regular", "fa-solid");
+            const articleId = event.target.id.split("_")[1];
+            const foundData = (0, _services.storageService).getData().find((favArticle)=>favArticle.id === articleId);
+            //if article does not exists add it to local storage else remove
+            if (!foundData) {
+                const article = articles.find((art)=>art.id === articleId);
+                (0, _services.storageService).setData([
+                    ...(0, _services.storageService).getData(),
+                    article
+                ]);
+            } else (0, _services.storageService).setData([
+                ...(0, _services.storageService).getData()
+            ].filter((favArticle)=>favArticle.id !== articleId));
+        });
+    });
+};
+
+},{"./sections/headlines":"dmbJl","../../utils":"e4Zav","../../services":"jH38A","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./sections/gossip":"g7Q1K","./sections/lifestyle":"dPSRZ","./sections/most-viewed":"1av6B","./sections/opinion":"9xPzw","./sections/science":"11ZKW","./sections/now":"3dM7L"}],"dmbJl":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "headlines", ()=>headlines);
+var _constants = require("../../../constants");
+var _services = require("../../../services");
+var _sectionHeader = require("./common/section-header");
+const SECTION_TITLE = "Headlines";
+const PARENT_ID = "headlinesNewsContent";
+let articles = [];
+const headlines = {
+    getContent: async ()=>{
+        articles = await (0, _services.dataService).getData({
+            endpoint: "search",
+            queryParams: new Map([
+                [
+                    "keywords",
+                    (0, _constants.HEADLINES_SECTION_CONTENT)
+                ],
+                [
+                    "limit",
+                    `${(0, _constants.ARTICLE_PER_COMPONENT_HEADLINES)}`
+                ], 
+            ])
+        });
+        return `	
+        <section class="mt-5 px-3">
+            ${(0, _sectionHeader.articleHeader).getContent(SECTION_TITLE)}
+            <div class="d-flex w-100 direction__column" id="${PARENT_ID}">
+                <div class="w-50 pt-4 pe-3 position-relative full__width px__none">
+                    <img class="w-100 headlines__image" src="${articles[0].image}" alt="laptop"/>
+                    <div class="set__position">
+                        <a href="./post.html" class="no__style__link text-light fw-bold fs-5 fs__smaller headlines__article__title">${articles[0].title}</a>
+                        <span class="favorite__news"><i class="fa-regular fa-heart favorite__button" id="fav_${articles[0].id}"></i></span>
+                        <small class="text-muted d-block mt-1 headlines__article__pub__date">${articles[0].published.split(" ")[0].replaceAll("-", "/")}</small>
+                    </div>
+                </div>
+                <div class="d-flex flex-column w-50 border-start border-2 pt-4 ps-3 full__width px__none bx__none">
+                    <div class="position-relative">
+                        <a href="./post.html" class="no__style__link fw-bold headlines__article__title" >${articles[1].title}</a>
+                        <span class="favorite__news"><i class="fa-regular fa-heart favorite__button" id="fav_${articles[1].id}"></i></span>
+                        <small class="text-muted d-block mt-1 headlines__article__pub__date">${articles[1].published.split(" ")[0].replaceAll("-", "/")}</small>
+                    </div>
+                    <div class="mt-4 position-relative">
+                        <a href="./post.html" class="no__style__link fw-bold headlines__article__title">${articles[2].title}</a>
+                        <span class="favorite__news"><i class="fa-regular fa-heart favorite__button" id="fav_${articles[2].id}"></i></span>
+                        <small class="text-muted d-block mt-1 headlines__article__pub__date">${articles[2].published.split(" ")[0].replaceAll("-", "/")}</small>
+                    </div>
+                    <div class="mt-4 position-relative">
+                        <a href="./post.html" class="no__style__link fw-bold headlines__article__title">${articles[3].title}</a>
+                        <span class="favorite__news"><i class="fa-regular fa-heart favorite__button" id="fav_${articles[3].id}"></i></span>
+                        <small class="text-muted d-block mt-1 headlines__article__pub__date">${articles[3].published.split(" ")[0].replaceAll("-", "/")}</small>
+                    </div>
+                </div>
+            </div>
+        </section>`;
+    },
+    initEventHandlers: (favoriteButton_onClick)=>{
+        favoriteButton_onClick(articles, PARENT_ID);
+    }
+};
+
+},{"../../../constants":"fVvYD","../../../services":"jH38A","./common/section-header":"egevq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"egevq":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "articleHeader", ()=>articleHeader);
+const articleHeader = {
+    getContent: (title)=>{
+        return `
+        <header
+            class="d-flex justify-content-between align-items-end headlines__header media__header__wrap">
+            <h2 class="m-0 fs-3 display__text__blue">${title}</h2>
+            <hr class="w-75 m-0 media__no__width" />
+            <a href="./post.html" class="text-dark">View all</a>
+        </header>`;
+    }
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"e4Zav":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "exchangeClass", ()=>exchangeClass);
+parcelHelpers.export(exports, "pageLoader", ()=>pageLoader);
+const poageLoader = document.getElementById("pageLoader");
+const exchangeClass = (element, firstClass, secondClass)=>{
     if (element.classList.contains(firstClass)) element.classList.replace(firstClass, secondClass);
     else element.classList.replace(secondClass, firstClass);
 };
-const getArticleElementIdentificationDetails = (keyword)=>{
-    const item = {
-        image: keyword.concat(artElemClassIdentPostfix_IMAGE),
-        title: keyword.concat(artElemClassIdentPostfix_TITLE),
-        pubDate: keyword.concat(artElemClassIdentPostfix_PUBDATE),
-        author: keyword.concat(artElemClassIdentPostfix_AUTHOR)
-    };
-    return item;
+const pageLoader = {
+    stop: ()=>{
+        poageLoader.classList.add("hidden");
+    },
+    start: ()=>{
+        poageLoader.classList.remove("hidden");
+    }
 };
 
-},{"./constants":"fVvYD","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./services":"jH38A"}]},["8qw7y","3rz9v"], "3rz9v", "parcelRequire94c2")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"g7Q1K":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "gossip", ()=>gossip);
+var _services = require("../../../services");
+var _constants = require("../../../constants");
+var _sectionHeader = require("./common/section-header");
+const SECTION_TITLE = "Gossip";
+const PARENT_ID = "gossipNewsContent";
+let articles = [];
+const gossip = {
+    getContent: async ()=>{
+        articles = await (0, _services.dataService).getData({
+            endpoint: "search",
+            queryParams: new Map([
+                [
+                    "keywords",
+                    (0, _constants.GOSSIP_SECTION_CONTENT)
+                ],
+                [
+                    "limit",
+                    `${(0, _constants.ARTICLE_PER_COMPONENT_GOSSIP)}`
+                ]
+            ])
+        });
+        return `
+			<section class="mt-5 px-3">
+            ${(0, _sectionHeader.articleHeader).getContent(SECTION_TITLE)}
+            <section class="d-flex gossip__split direction__column" id="${PARENT_ID}">
+                <article class="w-75 mt-4 pe-3 px__none full__width position-relative">
+                    <header>
+                        <img
+                            src="${articles[0].image}"
+                            alt="nano-robot"
+                            class="w-100 gossip__image"
+                        />
+                    </header>
+                    <div class="mt-2">
+                        <a href="./post.html" class="no__style__link fw-bold gossip__article__title">${articles[0].title}</a>
+                        <span class="favorite__news"><i class="fa-regular fa-heart favorite__button" id="fav_${articles[0].id}"></i></span>
+                        <small class="d-block text-muted mt-2 gossip__article__pub__date">${articles[0].published.split(" ")[0].replaceAll("-", "/")}</small>
+                    </div>
+                </article>
+                <section class="w-25 border-start border-2 pt-4 ps-3 full__width px__none bx__none">
+                    <article class="position-relative">
+                        <header>
+                            <img src="${articles[1].image}" alt="Love to learn" class="w-100 gossip__image"/>
+                        </header>
+                        <div class="mt-2">
+                            <a href="./post.html" class="no__style__link fw-bold gossip__article__title">${articles[1].title}</a>
+                            <span class="favorite__news"><i class="fa-regular fa-heart favorite__button" id="fav_${articles[1].id}"></i></span>
+                            <small class="d-block text-muted mt-2 gossip__article__pub__date">${articles[1].published.split(" ")[0].replaceAll("-", "/")}</small>
+                        </div>
+                    </article>
+                    <article class="mt-3 position-relative">
+                        <header>
+                            <img
+                                src="${articles[2].image}"
+                                alt="CSS features"
+                                class="w-100 gossip__image"
+                            />
+                        </header>
+                        <div class="mt-2">
+                            <a href="./post.html" class="no__style__link fw-bold gossip__article__title">${articles[2].title}</a>
+                            <span class="favorite__news"><i class="fa-regular fa-heart favorite__button" id="fav_${articles[2].id}"></i></span>
+                            <small class="d-block text-muted mt-2 gossip__article__pub__date">${articles[2].published.split(" ")[0].replaceAll("-", "/")}</small>
+                        </div>
+                    </article>
+                </section>
+            </section>
+        </section>
+        `;
+    },
+    initEventHandlers: (favoriteButton_onClick)=>{
+        favoriteButton_onClick(articles, PARENT_ID);
+    }
+};
+
+},{"../../../services":"jH38A","../../../constants":"fVvYD","./common/section-header":"egevq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dPSRZ":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "lifestyle", ()=>lifestyle);
+var _services = require("../../../services");
+var _constants = require("../../../constants");
+var _sectionHeader = require("./common/section-header");
+const SECTION_TITLE = "Lifestyle";
+const PARENT_ID = "lifestyleNewsContent";
+let articles = [];
+const lifestyle = {
+    getContent: async ()=>{
+        articles = await (0, _services.dataService).getData({
+            endpoint: "search",
+            queryParams: new Map([
+                [
+                    "keywords",
+                    (0, _constants.LIFESTYLE_SECTION_CONTENT)
+                ],
+                [
+                    "limit",
+                    `${(0, _constants.ARTICLE_PER_COMPONENT_LIFESTYLE)}`
+                ]
+            ])
+        });
+        return `
+        <section class="mt-5" id="${PARENT_ID}">
+        ${(0, _sectionHeader.articleHeader).getContent(SECTION_TITLE)}
+        <article class="mb-3 px-3 mt-4 lifestyle__article__display position-relative" >
+            <header>
+                <img
+                    class="w-100 lifestyle__image"
+                    src="${articles[0].image}"
+                    alt="A shelf of books"
+                />
+            </header>
+            <div class="mt-2">
+                <a href="./post.html" class="no__style__link fw-bold lifestyle__article__title">${articles[0].title}</a>
+                <span class="favorite__news"><i class="fa-regular fa-heart favorite__button" id="fav_${articles[0].id}"></i></span>
+                <small class="d-block text-muted mt-2 lifestyle__article__pub__date">${articles[0].published.split(" ")[0].replaceAll("-", "/")}</small>
+            </div>
+        </article>
+        <hr class="m-0 mx-3 hr__visibility" />
+        <section class="d-flex direction__column">
+            <article class="width__one__third pt-3 px-3 full__width position-relative">
+                <header>
+                    <img
+                        src="${articles[1].image}"
+                        alt="CSS books"
+                        class="w-100 lifestyle__image"
+                    />
+                </header>
+                <div class="mt-3">
+                    <a href="./post.html" class="no__style__link fw-bold lifestyle__article__title">${articles[1].title}</a>
+                    <span class="favorite__news"><i class="fa-regular fa-heart favorite__button" id="fav_${articles[1].id}"></i></span>
+                    <small class="d-block text-muted mt-2 lifestyle__article__pub__date">${articles[1].published.split(" ")[0].replaceAll("-", "/")}</small>
+                </div>
+            </article>
+            <article
+                class="width__one__third border-start border-end border-2 pt-3 px-3 bx__none full__width position-relative"
+            >
+                <header>
+                    <img
+                        src="${articles[2].image}"
+                        alt="A programming book"
+                        class="w-100 lifestyle__image"
+                    />
+                </header>
+                <div class="mt-3">
+                    <a href="./post.html" class="no__style__link fw-bold lifestyle__article__title">${articles[2].title}</a>
+                    <span class="favorite__news"><i class="fa-regular fa-heart favorite__button" id="fav_${articles[2].id}"></i></span>
+                    <small class="d-block text-muted mt-2 lifestyle__article__pub__date">${articles[2].published.split(" ")[0].replaceAll("-", "/")}</small>
+                </div>
+            </article>
+            <article
+                class="width__one__third pt-3 px-3 full__width position-relative"
+            >
+                <header>
+                    <img
+                        src="${articles[3].image}"
+                        alt="books"
+                        class="w-100 lifestyle__image"
+                    />
+                </header>
+                <div class="mt-3">
+                    <a href="./post.html" class="no__style__link fw-bold lifestyle__article__title">${articles[3].title}</a>
+                    <span class="favorite__news"><i class="fa-regular fa-heart favorite__button" id="fav_${articles[3].id}"></i></span>
+                    <small class="d-block text-muted mt-2 lifestyle__article__pub__date">${articles[3].published.split(" ")[0].replaceAll("-", "/")}</small>
+                </div>
+            </article>
+        </section>
+    </section>
+        `;
+    },
+    initEventHandlers: (favoriteButton_onClick)=>{
+        favoriteButton_onClick(articles, PARENT_ID);
+    }
+};
+
+},{"../../../services":"jH38A","../../../constants":"fVvYD","./common/section-header":"egevq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"1av6B":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "mostViewed", ()=>mostViewed);
+var _services = require("../../../services");
+var _constants = require("../../../constants");
+var _sectionHeader = require("./common/section-header");
+const SECTION_TITLE = "Most Viewed";
+const PARENT_ID = "mostViewedNewsContent";
+let articles = [];
+const mostViewed = {
+    getContent: async ()=>{
+        articles = await (0, _services.dataService).getData({
+            endpoint: "search",
+            queryParams: new Map([
+                [
+                    "keywords",
+                    (0, _constants.MOST_VIEWED_SECTION_CONTENT)
+                ],
+                [
+                    "limit",
+                    `${(0, _constants.ARTICLE_PER_COMPONENT_MOST_VIEWED)}`
+                ]
+            ])
+        });
+        return `
+        <section class="mt-5">
+        ${(0, _sectionHeader.articleHeader).getContent(SECTION_TITLE)}
+        <div class="d-flex px-3 direction__column" id="${PARENT_ID}">
+            <section class="w-75 me-3 most__viewed__section__grid full__width">
+                <article class="most__viewed__article position-relative">
+                    <a href="./post.html" class="no__style__link fw-bold most__viewed__article__title">${articles[0].title}</a>
+                    <span class="favorite__news"><i class="fa-regular fa-heart favorite__button" id="fav_${articles[0].id}"></i></span>
+                    <small class="d-block text-muted mt-2">
+                        <span class="most__viewed__article__author">${articles[0].author}</span>
+                        <span>-</span> 
+                        <span class="text-muted  most__viewed__article__pub__date">${articles[0].published.split(" ")[0].replaceAll("-", "/")}</span>
+                    </small>
+                </article>
+                <article class="most__viewed__article position-relative">
+                    <a href="./post.html" class="no__style__link fw-bold most__viewed__article__title">${articles[1].title}</a>
+                    <span class="favorite__news"><i class="fa-regular fa-heart favorite__button" id="fav_${articles[1].id}"></i></span>
+                    <small class="d-block text-muted mt-2">
+                        <span class="most__viewed__article__author">${articles[1].author}</span>
+                        <span>-</span>
+                        <span class="most__viewed__article__pub__date" >${articles[1].published.split(" ")[0].replaceAll("-", "/")}</span>
+                    </small>
+                </article>
+                <article class="most__viewed__article position-relative">
+                    <a href="./post.html" class="no__style__link fw-bold most__viewed__article__title">${articles[2].title}</a>
+                        <span class="favorite__news"><i class="fa-regular fa-heart favorite__button" id="fav_${articles[2].id}"></i></span>
+                        <small class="d-block text-muted mt-2">
+                        <span class="most__viewed__article__author">${articles[2].author}</span>
+                        <span>-</span>
+                        <span class="most__viewed__article__pub__date" >${articles[2].published.split(" ")[0].replaceAll("-", "/")}</span>
+                    </small>
+                </article>
+                <article class="most__viewed__article position-relative">
+                    <a href="./post.html" class="no__style__link fw-bold most__viewed__article__title">${articles[3].title}</a>
+                        <span class="favorite__news"><i class="fa-regular fa-heart favorite__button" id="fav_${articles[3].id}"></i></span>
+                        <small class="d-block text-muted mt-2">
+                        <span class="most__viewed__article__author">${articles[3].author}</span>
+                        <span>-</span>
+                        <span class="most__viewed__article__pub__date" >${articles[3].published.split(" ")[0].replaceAll("-", "/")}</span>
+                    </small>
+                </article>
+                <article class="most__viewed__article position-relative">
+                    <a href="./post.html" class="no__style__link fw-bold most__viewed__article__title">${articles[4].title}</a>
+                        <span class="favorite__news"><i class="fa-regular fa-heart favorite__button" id="fav_${articles[4].id}"></i></span>
+                        <small  class="d-block text-muted mt-2" >
+                        <span class="most__viewed__article__author">${articles[4].author}</span>
+                        <span>-</span>
+                        <span class="most__viewed__article__pub__date" >${articles[4].published.split(" ")[0].replaceAll("-", "/")}</span>
+                    </small>
+                </article>
+                <article class="most__viewed__article position-relative">
+                    <a href="./post.html" class="no__style__link fw-bold most__viewed__article__title">${articles[5].title}t</a>
+                        <span class="favorite__news"><i class="fa-regular fa-heart favorite__button" id="fav_${articles[5].id}"></i></span>
+                        <small class="d-block text-muted mt-2">
+                        <span class="most__viewed__article__author">${articles[5].author}</span>
+                        <span>-</span>
+                        <span class="most__viewed__article__pub__date" >${articles[5].published.split(" ")[0].replaceAll("-", "/")}</span>
+                    </small>
+                </article>
+            </section>
+            <div class="w-25 full__width">
+                <img
+                    src="${articles[0].image}"
+                    alt="Coding books"
+                    class="w-100 h-100 most__viewed__image"
+                />
+            </div>
+        </div>
+    </section>
+        `;
+    },
+    initEventHandlers: (favoriteButton_onClick)=>{
+        favoriteButton_onClick(articles, PARENT_ID);
+    }
+};
+
+},{"../../../services":"jH38A","../../../constants":"fVvYD","./common/section-header":"egevq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"9xPzw":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "opinion", ()=>opinion);
+var _constants = require("../../../constants");
+var _services = require("../../../services");
+var _sectionHeader = require("./common/section-header");
+const SECTION_TITLE = "Opinion";
+const PARENT_ID = "opinionNewsContent";
+let articles = [];
+const opinion = {
+    getContent: async ()=>{
+        articles = await (0, _services.dataService).getData({
+            endpoint: "search",
+            queryParams: new Map([
+                [
+                    "keywords",
+                    (0, _constants.OPINION_SECTION_CONTENT)
+                ],
+                [
+                    "limit",
+                    `${(0, _constants.ARTICLE_PER_COMPONENT_OPINION)}`
+                ]
+            ])
+        });
+        return `
+        <section class="mt-5">
+        ${(0, _sectionHeader.articleHeader).getContent(SECTION_TITLE)}
+        <section class="d-flex direction__column" id="${PARENT_ID}">
+            <article class="width__one__third bx__none full__width pt-3 px-3 position-relative">
+                <header>
+                    <img src="${articles[0].image}" alt="Miško Hevery" class="w-100 opinion__image"/>
+                    <h2 class="display__text__blue fs-6 mt-2 opinion__article__author">${articles[0].author}</h2>
+                </header>
+                <p class="mb-1 opinion__article__description d-inline">${articles[0].description}</p>
+                <span class="favorite__news"><i class="fa-regular fa-heart favorite__button" id="fav_${articles[0].id}"></i></span>
+                <small class="text-muted d-block opinion__article__pub__date">${articles[0].published.split(" ")[0].replaceAll("-", "/")}</small>
+            </article>
+            <article class="width__one__third bx__none full__width pt-3 border-start border-end border-2 px-3 position-relative">
+                <header>
+                    <img src="${articles[1].image}" alt="Jordan Walke" class="w-100 opinion__image"/>
+                    <h2 class="display__text__blue fs-6 mt-2 opinion__article__author">${articles[1].author}</h2>
+                </header>
+                <p class="mb-1 opinion__article__description d-inline">${articles[1].description}</p>
+                <span class="favorite__news"><i class="fa-regular fa-heart favorite__button" id="fav_${articles[1].id}"></i></span>
+                <small class="text-muted d-block opinion__article__pub__date">${articles[1].published.split(" ")[0].replaceAll("-", "/")}</small>
+            </article>
+            <article class="width__one__third bx__none full__width pt-3 px-3 position-relative">
+                <header>
+                    <img src="${articles[2].image}" alt="Tim Berners-Lee" class="w-100 opinion__image"/>
+                    <h2 class="display__text__blue fs-6 mt-2 opinion__article__author">${articles[2].author}</h2>
+                </header> 
+                <p class="mb-1 opinion__article__description d-inline">${articles[2].description}</p>
+                <span class="favorite__news"><i class="fa-regular fa-heart favorite__button" id="fav_${articles[2].id}"></i></span>
+                <small class="text-muted d-block opinion__article__pub__date">${articles[2].published.split(" ")[0].replaceAll("-", "/")}</small>
+            </article>
+        </section>
+    </section>
+        `;
+    },
+    initEventHandlers: (favoriteButton_onClick)=>{
+        favoriteButton_onClick(articles, PARENT_ID);
+    }
+};
+
+},{"../../../constants":"fVvYD","../../../services":"jH38A","./common/section-header":"egevq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"11ZKW":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "science", ()=>science);
+var _constants = require("../../../constants");
+var _services = require("../../../services");
+var _sectionHeader = require("./common/section-header");
+const SECTION_TITLE = "Science";
+const PARENT_ID = "scienceNewsContent";
+let articles = [];
+const science = {
+    getContent: async ()=>{
+        articles = await (0, _services.dataService).getData({
+            endpoint: "search",
+            queryParams: new Map([
+                [
+                    "keywords",
+                    (0, _constants.SCIENCE_SECTION_CONTENT)
+                ],
+                [
+                    "limit",
+                    `${(0, _constants.ARTICLE_PER_COMPONENT_SCIENCE)}`
+                ]
+            ])
+        });
+        return `
+			<section class="mt-5 px-3">
+            ${(0, _sectionHeader.articleHeader).getContent(SECTION_TITLE)}
+            <section class="d-flex direction__column" id="${PARENT_ID}">
+                <article class="pt-4 w-50 pe-3 px__none full__width position-relative">
+                    <header>
+                        <img
+                            src="${articles[0].image}"
+                            alt="Quantum Digits"
+                            class="w-100 science__image"
+                        />
+                    </header>
+                    <div class="mt-2">
+                        <a href="./post.html" class="no__style__link fw-bold science__article__title">${articles[0].title}</a>
+                        <span class="favorite__news"><i class="fa-regular fa-heart favorite__button" id="fav_${articles[0].id}"></i></span>
+                        <small class="d-block text-muted mt-2 science__article__pub__date">${articles[0].published.split(" ")[0].replaceAll("-", "/")}</small>
+                    </div>
+                </article>
+                <section class="w-50 border-start border-2 ps-3 pt-3 px__none full__width bx__none">
+                    <article class="position-relative">
+                        <a href="./post.html" class="no__style__link fw-bold science__article__title">${articles[1].title}</a>
+                        <span class="favorite__news"><i class="fa-regular fa-heart favorite__button" id="fav_${articles[1].id}"></i></span>
+                        <small class="d-block text-muted mt-2 science__article__pub__date">${articles[1].published.split(" ")[0].replaceAll("-", "/")}</small>
+                    </article>
+                    <article class="mt-2 position-relative">
+                        <a href="./post.html" class="no__style__link fw-bold science__article__title">${articles[2].title}</a>
+                        <span class="favorite__news"><i class="fa-regular fa-heart favorite__button" id="fav_${articles[2].id}"></i></span>
+                        <small class="d-block text-muted mt-2 science__article__pub__date">${articles[2].published.split(" ")[0].replaceAll("-", "/")}</small>
+                    </article>
+                    <article class="mt-2 position-relative">
+                        <a href="./post.html" class="no__style__link fw-bold science__article__title">${articles[3].title}</a>
+                        <span class="favorite__news"><i class="fa-regular fa-heart favorite__button" id="fav_${articles[3].id}"></i></span>
+                        <small class="d-block text-muted mt-2 science__article__pub__date">${articles[3].published.split(" ")[0].replaceAll("-", "/")}</small>
+                    </article>
+                    <article class="mt-2 position-relative">
+                        <a href="./post.html" class="no__style__link fw-bold science__article__title">${articles[4].title}</a>
+                        <span class="favorite__news"><i class="fa-regular fa-heart favorite__button" id="fav_${articles[4].id}"></i></span>
+                        <small class="d-block text-muted mt-2 science__article__pub__date">${articles[4].published.split(" ")[0].replaceAll("-", "/")}</small>
+                    </article>
+                    <article class="mt-2 position-relative">
+                        <a href="./post.html" class="no__style__link fw-bold science__article__title">${articles[5].title}</a>
+                        <span class="favorite__news"><i class="fa-regular fa-heart favorite__button" id="fav_${articles[5].id}"></i></span>
+                        <small class="d-block text-muted mt-2 science__article__pub__date">${articles[5].published.split(" ")[0].replaceAll("-", "/")}</small>
+                    </article>
+                    <article class="mt-2 position-relative">
+                        <a href="./post.html" class="no__style__link fw-bold science__article__title">${articles[6].title}</a>
+                        <span class="favorite__news"><i class="fa-regular fa-heart favorite__button" id="fav_${articles[6].id}"></i></span>
+                        <small class="d-block text-muted mt-2 science__article__pub__date">${articles[6].published.split(" ")[0].replaceAll("-", "/")}</small>
+                    </article>
+                </section>
+            </section>
+        </section>
+        `;
+    },
+    initEventHandlers: (favoriteButton_onClick)=>{
+        favoriteButton_onClick(articles, PARENT_ID);
+    }
+};
+
+},{"../../../constants":"fVvYD","../../../services":"jH38A","./common/section-header":"egevq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"3dM7L":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "nowSection", ()=>nowSection);
+const nowSection = {
+    getContent: ()=>{
+        return `
+        <div class="px-3">
+        <section class="justify-content-around align-items-center d-flex py-5 mt-5 bg-light px__1 media__header__wrap">
+            <p class="m-0 fw-bold">
+                NOW's goal is to:
+                <q>Build a future where people live in harmony with nature.</q>
+            </p>
+            <button class="btn btn-warning">
+                Sign up for the NOW email
+            </button>
+        </section>
+    </div>
+        `;
+    }
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["8qw7y","3rz9v"], "3rz9v", "parcelRequire94c2")
 
 //# sourceMappingURL=index.a2a37aa4.js.map
